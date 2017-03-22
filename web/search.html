@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <title>Top Tennis Tournaments</title>
+
+        <!-- Bootstrap -->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- stylesheet.css -->
+        <link rel="stylesheet" href="stylesheet.css">
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+        <!--Google Fonts-->
+        <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+
+        <!--For the little icon at top -->
+        <link href="images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+        <style>
+            .search{
+                margin-top: 60px;
+                text-align: center;
+                background-color: #efefef;
+                width: 500px;
+                margin: auto;
+                margin-top: 80px;
+                border-radius: 25px;
+                padding-top: 1px;
+                padding-bottom: 10px;
+                opacity: 0.84;
+            }
+
+            .resultSetFormat th {
+                /*border: thin solid black; */
+                background-color: #636382;
+                padding:5px;
+                opacity: 0.84;
+                color: white;
+            }
+
+            .resultSetFormat td {
+                /*border: thin solid black; */
+                background-color:#efefef;
+                padding:5px;
+                opacity: 0.84;
+            }
+
+            .resultSetFormat tr{
+                color: black;
+            }
+
+            table {
+                margin:auto;
+            }
+
+            .results h2{
+                text-align: center;
+                margin-top:60px;
+                color: white;
+                letter-spacing: 1px;
+                font-family: 'Lato', sans-serif;
+            }
+
+            .results{
+                height: 590px; /*leaves room at the bottom for the footer*/
+            }
+
+            .error{
+                color: red;
+            }
+
+
+
+        </style>
+
+    </head>
+
+
+    <body>
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>-->
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <!--<script src="js/bootstrap.min.js"></script>-->
+
+        <!-- START OF CONTENT HERE -->
+
+        <div id="title">
+            <div id="nav">
+                <div class="pageTitle">
+                    
+
+                    &nbsp;
+
+                    <a href ='logon.jsp'>Log On</a>
+                    
+
+                </div>
+
+
+
+                <div id="navBar">
+                    <a href="index.jsp">HOME</a>  &nbsp;&nbsp; | &nbsp;&nbsp;  
+                    <a href="users.jsp">PLAYERS</a> &nbsp;&nbsp; | &nbsp;&nbsp;
+                    <a href="other.jsp">TOURNAMENT</a> &nbsp;&nbsp; | &nbsp;&nbsp;
+                    <a href="assoc.jsp">REGISTRATION</a> &nbsp;&nbsp; | &nbsp;&nbsp;
+                    <a href="search.jsp">SEARCH</a> &nbsp;&nbsp; | &nbsp;&nbsp;
+                    <a href="membersOnly.jsp">MEMBERS</a> &nbsp;&nbsp; | &nbsp;&nbsp;
+                    <a href="contact.jsp">CONTACT</a> &nbsp;&nbsp; | &nbsp;&nbsp;
+                    <a href="labs.jsp">LABS </a>  
+
+                </div>
+                <span class="stopFloat"></span>
+            </div>
+        </div>
+
+        <div id="content">
+
+
+
+            <div class="search">
+                <h1>Search</h1>
+                
+
+                Player<span id ="playerSpan">:</span>  
+                    &nbsp;&nbsp;
+                    Tournament<span id = "tournamentSpan">:</span>  <br/><br/>
+
+                    Enter Donation Range (between): <input type="text" id="lowDonation" name="lowDonation" value=""/>
+                    and <input type="text" id="highDonation" name="highDonation" value=""><br/>
+
+                    <br/>
+                    <span id ="databaseError"></span>
+                   
+
+                    <br>
+                    <input type="button" value="Click to Search" onClick="javascript:ajaxGetData()"/>
+   
+
+            </div>
+
+
+
+
+
+            <div class="footer">
+                <div id="madeBy">
+                    <h4 style = "font-size: 14px;"><strong>Website Designed by Jedrick Boca</strong> 
+                        <br>
+                        <span id="email">jedrick.boca@temple.edu</span></h4>
+
+                </div>
+
+
+            </div> 
+
+
+        </div> <!--end Content div-->
+        
+        
+        
+        <script language="Javascript" type="text/javascript">
+
+            function $(element) {
+                return document.getElementById(element);
+            }
+
+            function ajaxGetSelectTags() {
+                //alert ('sending request'); 
+                var url = "SelectTags_Web_API.jsp";
+                //alert("url is " + url);
+                httpReq.open("GET", url);
+                httpReq.onreadystatechange = ajaxCallbackSelectTags;
+                httpReq.send(null);
+            }
+
+            function ajaxCallbackSelectTags() {
+                //alert('handling response');
+                if (httpReq.readyState == 4 && httpReq.status == 200) {
+
+                    var response = httpReq.responseText;
+                    console.log("response text is " + response);
+
+                    // wrap the json in parentheses to avoid tripping over javascript ambiguity...
+                    response = "(" + response + ")";
+                    var obj = eval(response);
+                    console.log(obj);
+
+                    if (obj == null) {
+                        $("databaseError").innerHTML = "Null Object?";
+                        return;
+                    }
+
+                    if (obj.dbError == null) {
+                        $("databaseError").innerHTML = "Null database error?";
+                        return;
+                    }
+
+                    if (obj.dbError.length > 0) {
+                        $("databaseError").innerHTML = obj.dbError;
+                        return;
+                    }
+
+                    jsBuildSelectTag(obj.playerSelectTag.list, 'playerId', 'playerSpan');
+                    jsBuildSelectTag(obj.tournamentSelectTag.list, 'tournamentId', 'tournamentSpan');
+                    $("databaseError").innerHTML = obj.dbError;
+                }
+            }
+
+            function jsBuildSelectTag(optionList, tagId, parentId) {
+                //console.log("tagId: " + tagId);
+                //console.log("parentId: " + parentId);
+
+                var parent = document.getElementById(parentId); // get ref to parent element
+
+                // Create a select tag, set it's id and append this tag to the parent.
+                var selectList = document.createElement("select");
+                selectList.id = tagId;
+                parent.appendChild(selectList);
+
+                //Create and append the options
+                // i in optionList just iterates i from 0 to length of list-1.
+                for (i in optionList) {
+
+                    // new Option() input parameers are displayed option, option value. 
+                    var myOption = new Option(optionList[i].name, optionList[i].id); // displayed option, option value
+                    selectList.appendChild(myOption);
+                }
+            }
+
+            function ajaxGetData() {
+                //alert ('sending request'); 
+                var url = "DataSearch_Web_API.jsp";
+                url += "?lowDonation=" + $("lowDonation").value;
+                url += "&highDonation=" + $("highDonation").value;
+                alert("url is " + url);
+                httpReq.open("GET", url);
+                httpReq.onreadystatechange = ajaxCallbackData;
+                httpReq.send(null);
+                $("registrationTable").innerHTML = "";
+            }
+
+            function ajaxCallbackData() {
+                //alert('handling response');
+                if (httpReq.readyState == 4 && httpReq.status == 200) {
+
+                    var response = httpReq.responseText;
+                    //alert("response text is " + response);
+
+                    // wrap the json in parentheses to avoid tripping over javascript ambiguity...
+                    response = "(" + response + ")";
+                    var obj = eval(response);
+
+                    if (obj.dbError == null) {
+                        $("registrationTable").innerHTML = "Search is currently unavailable.";
+                        return;
+                    }
+
+                    if (obj.dbError.length > 0) {
+                        $("registrationTable").innerHTML = "Error: " + obj.dbError;
+                        return;
+                    }
+
+                    if (parseInt(obj.listSize) == 0) {
+                        $("registrationTable").innerHTML = "No registrations Match Your Search";
+                        return;
+                    }
+
+                    var newRow;
+                    var newCell;
+                    var newImg;
+                    
+                    var newTable = document.createElement("table");
+                    $("registrationTable").appendChild(newTable);
+                    
+                    for (i in obj.registrationList) {
+
+                        newRow = newTable.insertRow(i);
+                        //newCell = newRow.insertCell(0);
+                        //newImg = document.createElement("img");
+                        //newImg.src = obj.countryFlagList[i].flagURL;
+                        //newCell.appendChild(newImg);
+
+                        newCell = newRow.insertCell(0);
+                        newCell.innerHTML = obj.registrationList[i].playerName;
+                        
+                        newCell = newRow.insertCell(1);
+                        newCell.innerHTML = obj.registrationList[i].tournamentName;
+                        
+                        newCell = newRow.insertCell(2);
+                        newCell.innerHTML = obj.registrationList[i].eventType;
+                        
+                        newCell = newRow.insertCell(3);
+                        newCell.innerHTML = obj.registrationList[i].donation;
+                        
+                        newCell = newRow.insertCell(4);
+                        newCell.innerHTML = obj.registrationList[i].specialNeeds;
+                    }
+                }
+            }
+
+            // MAIN PROGRAM
+
+            //Make the XMLHttpRequest Object
+            var httpReq; 
+            if (window.XMLHttpRequest) {
+                httpReq = new XMLHttpRequest();  //For Firefox, Safari, Opera
+            } else if (window.ActiveXObject) {
+                httpReq = new ActiveXObject("Microsoft.XMLHTTP");         //For IE 5+
+            } else {
+                alert('ajax not supported');
+            }
+
+            ajaxGetSelectTags();
+
+        </script>
+    </body>
+</html>

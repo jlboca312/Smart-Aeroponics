@@ -1,0 +1,434 @@
+body{
+    background-image:url('http://cdn.wallpapersafari.com/4/9/n2YD5J.jpg');
+    /*background-image:url('http://www.v3wall.com/wallpaper/1366_768/0911/1366_768_20091103093234179534.jpg');*/
+    top: 0;
+    left: 0;
+    background-size: cover;
+    min-height: 100%;
+    background-attachment: fixed;
+    background-position: left 0px;
+    /*background-position: center;*/
+}
+
+
+#nav{
+    z-index:2;       /* added for fixed layout: keeps titleNav on top of other elemements */
+    position:fixed; /* added for fixed layout */
+    top:0px;        /* added for fixed layout */
+    left:0px;       /* added for fixed layout */
+    width:100%;     /* added for fixed layout */
+    color:white;
+    font-family: serif;
+    background-color: #f2f2f2;
+    height: 35px;
+    min-width: 1250px;  /* prevents nav links from wrapping when browser window is too narrow */
+    background-color:white;
+
+}
+
+#nav a{
+    text-decoration: none;
+    color:black;
+}
+
+
+
+#nav a:visited{
+    /*color: white;*/
+}
+
+.pageTitle{
+    position: relative;
+    margin: 0;
+    padding-top:10px;
+    padding-left:10px;
+    font-family: 'Lato', sans-serif;
+    font-size:15px;
+    letter-spacing: 1.5px;
+    text-align:center;
+    float:left;
+    color: white;
+}
+
+#navBar{
+    position: absolute;
+    top: 0px;
+    right:0px;
+    z-index:2;
+    margin:0;
+    padding-top:10px;
+    padding-bottom:10px;
+    padding-right: 10px;
+    font-size:15px;
+    letter-spacing: 1px;
+    font-family: 'Lato', sans-serif;
+    float:right;
+    text-align:center;
+    color:white;
+
+}
+
+#logonButton{
+    float: left;
+    position: relative;
+    top: 35px;
+    right: 300px;
+    font-size:15px;
+    letter-spacing: 1px;
+    font-family: 'Lato', sans-serif;
+}
+
+
+.jumbo{
+    background-color:rgba(0, 0, 0, 0);
+    height: 800px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+
+}
+
+.jumbo .container{
+    position: relative;
+    padding: 1px;
+    padding-top: 55px;
+}
+
+.jumbo h1 {
+    color: black;
+    font-size: 70px;  
+    font-family: 'Lato', sans-serif;
+    font-weight: bold;
+    text-align: left;
+    /*-webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: black;*/
+}
+
+.jumbo p {
+    padding-top: 12px;
+    color: #808080;
+    font-size: 18px;
+    text-align: left;
+    -webkit-text-stroke-color: black;
+    font-family: 'Lato', sans-serif;
+}
+
+
+
+
+#mission{
+    float:right;
+    width: 400px;    
+    margin-left: 160px;
+    margin-right: 150px;
+    margin-bottom: 30px;
+    margin-top: 252px;
+    padding:20px;
+    border-radius: 25px;
+    text-align: center;
+    font-size:16px;
+    opacity: 0.84;
+    background-color: #efefef;
+
+}
+
+#message{
+    /*for moving it down out of view page*/
+    position: relative;
+    top:177px;
+    float: left;
+    width: 500px;
+    margin-left: 100px;
+    margin-right: 50px;
+    padding:20px;
+    border-radius: 25px;
+    text-align: center;
+    font-size:16px;
+    opacity: 0.84;
+    background-color: #efefef;
+    border-bottom:1px solid #dbdbdb;
+
+}
+
+
+#email{
+    font-size:12px;
+}
+
+#lab1{
+    float:left;
+    width: 400px;    
+    margin-left: 160px;
+    margin-right: 60px;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    padding:20px;
+    border-radius: 25px;
+    text-align: center;
+    font-size:16px;
+    opacity: 0.84;
+    background-color: #efefef;
+    border-bottom:1px solid #dbdbdb;
+
+}
+
+#lab2{
+    float: right;
+    width: 500px;
+    margin-top: 37px;
+    margin-left: 60px;
+    margin-right: 100px;
+    padding:20px;
+    border-radius: 25px;
+    text-align: center;
+    font-size:16px;
+    opacity: 0.84;
+    background-color: #efefef;
+    border-bottom:1px solid #dbdbdb;
+
+}
+
+#lab3{
+    float:left;
+    width: 365px;    
+    margin-left: 96px;
+    margin-right: 60px;
+    margin-bottom: 30px;
+    margin-top: 35px;
+    padding:20px;
+    border-radius: 25px;
+    text-align: center;
+    font-size:16px;
+    opacity: 0.84;
+    background-color: #efefef;
+    border-bottom:1px solid #dbdbdb;
+
+}
+
+#lab4{
+    float:right;
+    width: 420px;    
+    margin-left: 60px;
+    margin-right: 130px;
+    margin-bottom: 30px;
+    margin-top: 290px;
+    padding:20px;
+    border-radius: 25px;
+    text-align: center;
+    font-size:16px;
+    opacity: 0.84;
+    background-color: #efefef;
+    border-bottom:1px solid #dbdbdb;
+}
+
+#lab5{
+    float:left;
+    position: relative;
+    left: 50px;
+    width: 365px;    
+    margin-left: 100px;
+    margin-right: 60px;
+    margin-bottom: 30px;
+    margin-top: 320px;
+    padding:20px;
+    border-radius: 25px;
+    text-align: center;
+    font-size:16px;
+    opacity: 0.84;
+    background-color: #efefef;
+    border-bottom:1px solid #dbdbdb;
+
+}
+
+#lab6{
+    float:right;
+    width: 420px;    
+    margin-left: 60px;
+    margin-right: 130px;
+    margin-bottom: 30px;
+    margin-top: 290px;
+    padding:20px;
+    border-radius: 25px;
+    text-align: center;
+    font-size:16px;
+    opacity: 0.84;
+    background-color: #efefef;
+    border-bottom:1px solid #dbdbdb;
+
+}
+
+#lab7{
+    float:left;
+    position: relative;
+    left: 50px;
+    width: 365px;    
+    margin-left: 100px;
+    margin-right: 60px;
+    margin-bottom: 30px;
+    margin-top: 320px;
+    padding:20px;
+    border-radius: 25px;
+    text-align: center;
+    font-size:16px;
+    opacity: 0.84;
+    background-color: #efefef;
+    border-bottom:1px solid #dbdbdb;
+
+}
+
+#lab8{
+    float:right;
+    width: 420px;    
+    margin-left: 60px;
+    margin-right: 130px;
+    margin-bottom: 30px;
+    margin-top: 290px;
+    padding:20px;
+    border-radius: 25px;
+    text-align: center;
+    font-size:16px;
+    opacity: 0.84;
+    background-color: #efefef;
+    border-bottom:1px solid #dbdbdb;
+
+}
+
+#lab9{
+    float:left;
+    position: relative;
+    left: 50px;
+    width: 365px;    
+    margin-left: 100px;
+    margin-right: 60px;
+    margin-bottom: 30px;
+    margin-top: 320px;
+    padding:20px;
+    border-radius: 25px;
+    text-align: center;
+    font-size:16px;
+    opacity: 0.84;
+    background-color: #efefef;
+    border-bottom:1px solid #dbdbdb;
+
+}
+
+
+
+
+.welcomeMsg{
+    position:relative;
+    bottom: 14px;
+    color: white;
+    margin-top: 50px;
+    text-align: center;
+    background-color:black;
+    width: 500px;
+    margin: auto;
+    margin-top: 80px;
+    border-radius: 25px;
+    padding-top: 1px;
+    padding-bottom: 10px;
+}
+
+.tennisPic1{
+    position: relative;
+    margin-left: 300px;
+    margin-top: 70px;
+    float: left;
+    padding: 0px;
+    width: 320px;
+    border-radius: 25px;
+    background-color: #C8C8C8;
+}
+
+.tennisPic2{
+    position: relative;
+    margin-left: 100px;
+    margin-top: 370px;
+    float: left;
+    padding: 0px;
+    width: 320px;
+    border-radius: 25px;
+    background-color: #C8C8C8;
+}
+
+.tennisPic3{
+    position: relative;
+    margin-left: 300px;
+    margin-bottom: 150px; /*because last image, leaves room for bottom*/
+    float: left;
+    padding: 0px;
+    width: 320px;
+    border-radius: 25px;
+    background-color: #C8C8C8;
+
+}
+/*
+img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 25px;
+    width: 320px;
+    height: 270px;
+    opacity: 0.9
+}*/
+
+.pics{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 25px;
+    width: 320px;
+    height: 270px;
+    opacity: 0.9 
+}
+
+.insert{
+    margin-top: 60px;
+    text-align: center;
+    background-color: #efefef;
+    width: 500px;
+    margin: auto;
+    margin-top: 80px;
+    border-radius: 25px;
+    padding-top: 1px;
+    padding-bottom: 10px;
+    opacity: 0.84;
+}
+
+.insert .insideInsert input{ /*allows for inline text box input*/
+    display: inline-block;
+    float:right;
+    position: relative;
+    right: 50px;
+
+}
+
+.insert .insideInsert #selectTag{ /*aligns select tags with text box inputs*/
+    display: inline-block;
+    float:right;
+    position: relative;
+    right: 50px;
+}
+
+.error{
+    color: red;
+    position: relative;
+    bottom: 10px;
+
+}
+
+.msg{
+    font-weight: bold;
+    font-size: 16px;
+}
+
+
+#logg a{
+    color: #209b0d;
+}
+
+
+
+

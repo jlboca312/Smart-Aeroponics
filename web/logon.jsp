@@ -103,7 +103,12 @@
         </div>
 
         <input type="submit" value="Submit"/>
-        <br/><br/>
+        
+        <div id="RegisterMsg">
+            <br/>
+            <p>Don't have an account? Create one <a href="register.jsp">here.</a></p>
+        </div>
+        
         <span class="msg">
             <% out.print(msg);%>
         </span>

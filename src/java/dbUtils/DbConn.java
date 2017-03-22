@@ -36,14 +36,14 @@ public class DbConn {
             Class.forName(DRIVER).newInstance();
             try {              
                 // Assume you are running from home using tunneling...
-                //String url = "jdbc:mysql://localhost:3307/SP16_2308_tuf01188?user=tuf01188&password=oazaivoo";
-                String url = "smartaerodb.cmdnvi1pqroe.us-west-2.rds.amazonaws.com:3306";
+                String url = "jdbc:mysql://localhost:3307/SP16_2308_tuf01188?user=tuf01188&password=oazaivoo";
+                //String url = "smartaerodb.cmdnvi1pqroe.us-west-2.rds.amazonaws.com:3306";
                 //String url = "fuck";
                 
                 // unless you are working from temple (wachman hall)
                if (isTemple) {
-                    //url = "jdbc:mysql://cis-linux2.temple.edu:3306/SP16_2308_tuf01188?user=tuf01188&password=oazaivoo"; 
-                    url = "jdbc:mysql://smartaerodb.cmdnvi1pqroe.us-west-2.rds.amazonaws.com:3306";
+                    url = "jdbc:mysql://cis-linux2.temple.edu:3306/SP16_2308_tuf01188?user=tuf01188&password=oazaivoo"; 
+                    //url = "jdbc:mysql://smartaerodb.cmdnvi1pqroe.us-west-2.rds.amazonaws.com:3306";
                     //url = "fuck";
                 }                
                 this.conn = DriverManager.getConnection(url);

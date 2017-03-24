@@ -29,7 +29,7 @@
         } else { //meaning user is logged in
             try {
                 msg = "Welcome " + loggedOnPlayer.playerName + "!";
-                logonLink = "<a href = 'logoff.jsp'>Log Off</a>"; //show log of link if user is logged in, brings them to logoff.jsp
+                logonLink = "<span id=\"logg\"><a href = 'logoff.jsp'>Log Off</a></span>"; //show log of link if user is logged in, brings them to logoff.jsp
             } catch (Exception e) {
                 msg += " Exception was thrown: " + e.getMessage();
             }

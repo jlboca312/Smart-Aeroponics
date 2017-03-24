@@ -55,7 +55,7 @@
 
             <div id="navBar">
                 <a href="index.jsp">HOME</a>  &nbsp;&nbsp; | &nbsp;&nbsp;  
-                <a href="users.jsp">SYSTEM DIAGNOSTICS</a> &nbsp;&nbsp; | &nbsp;&nbsp;
+                <a href="system.jsp">SYSTEM DIAGNOSTICS</a> &nbsp;&nbsp; | &nbsp;&nbsp;
                 <a href="about.jsp">ABOUT</a> &nbsp;&nbsp; | &nbsp;&nbsp;
                 <a href="contact.jsp">CONTACT US</a> 
 

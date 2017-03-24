@@ -73,7 +73,7 @@
                 success = true;
             }
 
-            if (success) {
+            if (success && (loggedOnPlayer.playerName.length() > 0)) {
                 welcomeMsg = "Log In Successful, Welcome " + loggedOnPlayer.playerName + " !";
             } else {
                 welcomeMsg = "Log In Failed. Username and Password invalid.";

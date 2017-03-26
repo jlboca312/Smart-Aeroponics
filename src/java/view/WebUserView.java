@@ -25,8 +25,15 @@ public class WebUserView {
         ResultSet results = null;
         try {
             //sb.append("ready to create the statement & execute query " + "<br/>");
-            String sql = "select player_id, player_name, email_address, pswd, skill_level, role_name from Player as P, User_role as U "
+            
+            //sql string to display all fields of User table
+            /*String sql = "select player_id, player_name, email_address, pswd, skill_level, role_name from Player as P, User_role as U "
+                    + "where P.user_role_id = U.user_role_id order by player_id, player_name";*/
+            
+            //sql string to display just id, name, email and pswd
+            String sql = "select player_id, player_name, email_address, pswd, from Player as P, User_role as U "
                     + "where P.user_role_id = U.user_role_id order by player_id, player_name";
+            
             stmt = dbc.getConn().prepareStatement(sql);
             results = stmt.executeQuery();
             //sb.append("executed the query " + "<br/><br/>");
@@ -35,20 +42,20 @@ public class WebUserView {
             sb.append(cssTableClass);
             sb.append("'>");
             sb.append("<tr>");
-            sb.append("<th style='text-align:right'>Player ID</th>");
-            sb.append("<th style='text-align:center'>Player Name</th>");
+            sb.append("<th style='text-align:right'>User ID</th>");
+            sb.append("<th style='text-align:center'>User Name</th>");
             sb.append("<th style='text-align:center'>Email Address</th>");
             sb.append("<th style='text-align:center'>Password</th>");
-            sb.append("<th style='text-align:right'>Skill Level</th></th>");
-            sb.append("<th style='text-align:center'>Role Name</th></tr>");
+            //sb.append("<th style='text-align:right'>Skill Level</th></th>");
+            //sb.append("<th style='text-align:center'>Role Name</th></tr>");
             while (results.next()) {
                 sb.append("<tr>");
                 sb.append(FormatUtils.formatIntegerTd(results.getObject("player_id")));
                 sb.append(FormatUtils.formatStringTd(results.getObject("player_name")));
                 sb.append(FormatUtils.formatStringTd(results.getObject("email_address")));
                 sb.append(FormatUtils.formatStringTd(results.getObject("pswd")));
-                sb.append(FormatUtils.formatDecimalTd(results.getObject("skill_level")));
-                sb.append(FormatUtils.formatStringTd(results.getObject("role_name")));
+               // sb.append(FormatUtils.formatDecimalTd(results.getObject("skill_level")));
+                //sb.append(FormatUtils.formatStringTd(results.getObject("role_name")));
                 sb.append("</tr>\n");
             }
             sb.append("</table>");
@@ -91,7 +98,12 @@ public class WebUserView {
         ResultSet results = null;
 
         try {
-            String sql = "select player_id, player_name, email_address, pswd, skill_level, role_name from Player as P, User_role as U "
+            //sql string for all fields in User table
+            /*String sql = "select player_id, player_name, email_address, pswd, skill_level, role_name from Player as P, User_role as U "
+                    + "where P.user_role_id = U.user_role_id order by player_id, player_name";*/
+            
+            //sql string for just displaying id, name, email and pswd
+            String sql = "select player_id, player_name, email_address, pswd from Player as P, User_role as U "
                     + "where P.user_role_id = U.user_role_id order by player_id, player_name";
 
             stmt = dbc.getConn().prepareStatement(sql);
@@ -109,12 +121,12 @@ public class WebUserView {
                 sb.append("<th style='background-color:transparent;border:none;'> </th>");
             }
 
-            sb.append("<th style='text-align:right'>Player ID</th>");
-            sb.append("<th style='text-align:center'>Player Name</th>");
+            sb.append("<th style='text-align:right'>User ID</th>");
+            sb.append("<th style='text-align:center'>User Name</th>");
             sb.append("<th style='text-align:center'>Email Address</th>");
             sb.append("<th style='text-align:center'>Password</th>");
-            sb.append("<th style='text-align:right'>Skill Level</th></th>");
-            sb.append("<th style='text-align:center'>Role Name</th></tr>");
+            //sb.append("<th style='text-align:right'>Skill Level</th></th>");
+            //sb.append("<th style='text-align:center'>Role Name</th></tr>");
 
             while (results.next()) {
                 sb.append("<tr>");
@@ -134,8 +146,8 @@ public class WebUserView {
                 sb.append(FormatUtils.formatStringTd(results.getObject("player_name")));
                 sb.append(FormatUtils.formatStringTd(results.getObject("email_address")));
                 sb.append(FormatUtils.formatStringTd(results.getObject("pswd")));
-                sb.append(FormatUtils.formatDecimalTd(results.getObject("skill_level")));
-                sb.append(FormatUtils.formatStringTd(results.getObject("role_name")));
+                //sb.append(FormatUtils.formatDecimalTd(results.getObject("skill_level")));
+                //sb.append(FormatUtils.formatStringTd(results.getObject("role_name")));
                 sb.append("</tr>\n");
             }
             sb.append("</table>");

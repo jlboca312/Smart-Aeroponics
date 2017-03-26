@@ -5,7 +5,7 @@
 <%@page language="java" import="dbUtils.DbConn" %>
 <%@page language="java" import="model.Player.*" %>
 <%@page language="java" import="dbUtils.DbConn" %>
-
+<%@page import="dbUtils.MakeSelectTag"%>
 <style>
     .register{
         margin-top: 60px;
@@ -42,6 +42,11 @@
     DbConn dbc = new DbConn(); //get database connection
     StringData input = new StringData();
     StringData errors = new StringData();
+    
+    String selectorErr = "";
+    
+    //variable for role_name select tag
+    String roleSQL = "SELECT user_role_id, role_name FROM User_role ORDER BY role_name";
 
     if (request.getParameter("playerName") != null) {
         /* PLAYER STRING DATA*/
@@ -52,6 +57,10 @@
         input.roleName = request.getParameter("roleName");
 
         errors.errorMsg = dbc.getErr();
+        
+        if(input.roleName.equals("0")){
+            selectorErr = "Must Select a Role Name";
+        }
 
 
         if ((errors.errorMsg.length() == 0)) { //if no error message so database connection is good
@@ -63,9 +72,13 @@
             }
 
         }
+        
 
     }
 
+    /* MAKE THE SELECTOR */
+    String roleSelect = MakeSelectTag.makeSelect(dbc, "roleName", roleSQL, input.roleName, "Select Role Name", "user_role_id", "role_name");
+    
     dbc.close(); //close db connection
 %>
 
@@ -101,6 +114,13 @@
             <input type = "text" name="skillLevel" value = "<%out.print(input.skillLevel);%>"/>
             <br/><br/>
             <br/>
+            
+            Role Name 
+            <span id="selectTag"><%out.print(roleSelect);%></span>
+            <br/><br/>
+            <span class ="error"><%out.print(selectorErr);%></span>
+            
+            <br/><br/>
 
         </div>
 

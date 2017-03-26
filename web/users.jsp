@@ -118,7 +118,7 @@
     <br/>
     
     <div id="userInsert">
-        <a href="insertUsers.jsp">Insert Player</a>
+        <a href="register.jsp">Register New User</a>
         <% out.print(msg);%>
 
         <div id="successMessage">

@@ -32,6 +32,7 @@
 <div class="jumbo">
     <div class="container">
         <h1>YOUR <br> SYSTEM</h1>
+        <p><a href="users.jsp">Click here to view table of users.</a></p>
       
     </div>
 </div>

@@ -87,7 +87,7 @@
 
 <div class="logon">
     <h1>Login</h1>
-    <form action="logon.jsp" method="get">
+    <form action="logon.jsp" method="post">
 
         <div class = "insideLogon">
             Please enter your Email Address 

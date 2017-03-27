@@ -20,5 +20,5 @@
         <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 
         <!--For the little icon at top -->
-        <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+        <link href="images/favicon.ico" rel="shortcut icon"  type="image/x-icon">
         <link rel="icon" href="images/favicon.ico" type="image/x-icon">

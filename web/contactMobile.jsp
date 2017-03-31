@@ -3,16 +3,7 @@
 <jsp:include page="jspIncludes/toHead.jsp"/>
 
 <style>
-    .background{
-        background-image:url('https://wallpaperscraft.com/image/sun_leaves_mint_plant_74320_360x640.jpg');
-        top: 0;
-        left: 0;
-        background-size: cover;
-        height: 100%;
-        width:360px;
-        background-attachment: fixed;
-        
-    }
+    
 
     .contactContainer{
         position: relative;
@@ -39,12 +30,11 @@
 <jsp:include page="headToContentMobile.jsp"/>
 <!-- CONTENT GOES HERE -->
 
-<div class="background">
 
     <div class="contactContainer">
         <h1>CONTACT US</h1>
         <p>Feel free to reach out<br/> to us with any questions or concerns.</p>
     </div>
 
-</div>
+
 <jsp:include page="jspIncludes/postContent.jsp"/>

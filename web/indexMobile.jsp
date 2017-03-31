@@ -33,7 +33,7 @@
         text-align: center;
         font-size:16px;
         opacity: 0.84;
-        background-color: #d4f4db;
+        background-color: #efefef;
         /*background:url('https://wallpaperscraft.com/image/sun_leaves_mint_plant_74320_360x640.jpg');*/
         margin: 0 auto;
 
@@ -48,7 +48,7 @@
         font-size:16px;
         opacity: 0.84;
         /*background:url('https://wallpaperscraft.com/image/sun_leaves_mint_plant_74320_360x640.jpg');*/
-        background-color: #d4f4db;
+        background-color: #efefef;
         border-bottom:1px solid #dbdbdb;
         margin: 0 auto;
 

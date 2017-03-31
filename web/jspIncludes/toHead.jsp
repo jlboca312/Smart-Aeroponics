@@ -22,3 +22,8 @@
         <!--For the little icon at top -->
         <link href="images/favicon.ico" rel="shortcut icon"  type="image/x-icon">
         <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+
+        <!-- CHART.JS GARBAGE-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
+       
+        

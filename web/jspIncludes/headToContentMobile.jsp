@@ -64,10 +64,11 @@
             margin:0;
             width:100%;
             height:100vh;
-            /*background:url('https://wallpaperscraft.com/image/sun_leaves_mint_plant_74320_360x640.jpg');*/
-            background:#f4f4f4;
+            background:url('https://wallpaperscraft.com/image/sun_leaves_mint_plant_74320_360x640.jpg');
+            /*background:#f4f4f4;*/
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            background-attachment: fixed;
         }
 
         header{

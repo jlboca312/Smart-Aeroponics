@@ -21,7 +21,7 @@
         if (loggedOnPlayer == null) { //meaning user is not logged in
             try {
                 msg = "";
-                logonLink = "<span id=\"logg\"><a href ='logon.jsp'>LOG ON</a></span>"; //show a Log On link if no user is logged in
+                logonLink = "<span id=\"logg\"><a href ='logonMobile.jsp'>LOG ON</a></span>"; //show a Log On link if no user is logged in
             } catch (Exception e) {
                 msg += " Exception was thrown: " + e.getMessage();
             }
@@ -64,11 +64,11 @@
             margin:0;
             width:100%;
             height:100vh;
-            background:url('https://wallpaperscraft.com/image/sun_leaves_mint_plant_74320_360x640.jpg');
-            /*background:#f4f4f4;*/
+            /*background:url('https://wallpaperscraft.com/image/sun_leaves_mint_plant_74320_360x640.jpg');*/
+            background:#f4f4f4;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            background-attachment: fixed;
+            background-attachment: fixed;          
         }
 
         header{
@@ -174,7 +174,7 @@
         </div>
     </div>
 
-    <div id="content">
+    
 
 
 

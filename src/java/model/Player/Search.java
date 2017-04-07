@@ -8,7 +8,7 @@ import dbUtils.FormatUtils;
 
 public class Search {
     
-    public static StringData findById(DbConn dbc, String id) {
+    /*public static StringData findById(DbConn dbc, String id) {
         StringData foundPlayer = new StringData();
 
         if (id == null) {
@@ -56,5 +56,5 @@ public class Search {
             return foundPlayer;
         }
 
-    }
+    }*/
 }

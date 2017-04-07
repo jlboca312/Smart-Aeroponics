@@ -104,7 +104,20 @@ public class ValidationUtils {
             System.out.println("ValidationUtils.integerConversion(): cannot convert " + val + " to Integer.");
             return null;
         }
-    } // integerConversion()   
+    } // integerConversion() 
+    
+    public static Long longConversion(String val) {
+
+        if ((val == null) || (val.length() == 0)) {
+            return null;
+        }
+        try {
+            return new Long(val);
+        } catch (Exception e) {
+            System.out.println("ValidationUtils.longConversion(): cannot convert " + val + " to Long.");
+            return null;
+        }
+    }
 
     /* Check string "val" to see if it meets the db constraints (e.g., not emtpy string 
      * if it is a required field, not longer than db allows). If OK, return "". 

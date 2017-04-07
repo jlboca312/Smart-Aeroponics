@@ -42,26 +42,27 @@
     DbConn dbc = new DbConn(); //get database connection
     StringData input = new StringData();
     StringData errors = new StringData();
-    
-    String selectorErr = "";
-    
-    //variable for role_name select tag
-    String roleSQL = "SELECT user_role_id, role_name FROM User_role ORDER BY role_name";
 
-    if (request.getParameter("playerName") != null) {
+    String selectorErr = "";
+
+    //variable for role_name select tag
+    //String roleSQL = "SELECT user_role_id, role_name FROM User_role ORDER BY role_name";
+    if (request.getParameter("user_name") != null) {
         /* PLAYER STRING DATA*/
-        input.playerName = request.getParameter("playerName");
-        input.emailAddress = request.getParameter("emailAddress");
-        input.pswd = request.getParameter("pswd");
-        input.skillLevel = request.getParameter("skillLevel");
-        input.roleName = request.getParameter("roleName");
+        input.user_name = request.getParameter("user_name");
+        input.email = request.getParameter("email");
+        input.first_name = request.getParameter("first_name");
+        input.last_name = request.getParameter("last_name");
+        input.phone_number = request.getParameter("phone_number");
+        input.salt = request.getParameter("salt");
+        input.password_id = request.getParameter("password_id");
+        input.system_ip = request.getParameter("system_ip");
 
         errors.errorMsg = dbc.getErr();
-        
-        if(input.roleName.equals("0")){
-            selectorErr = "Must Select a Role Name";
-        }
 
+        /*if (input.roleName.equals("0")) {
+            selectorErr = "Must Select a Role Name";
+        }*/
 
         if ((errors.errorMsg.length() == 0)) { //if no error message so database connection is good
 
@@ -72,13 +73,12 @@
             }
 
         }
-        
 
     }
 
     /* MAKE THE SELECTOR */
-    String roleSelect = MakeSelectTag.makeSelect(dbc, "roleName", roleSQL, input.roleName, "Select Role Name", "user_role_id", "role_name");
-    
+    //String roleSelect = MakeSelectTag.makeSelect(dbc, "roleName", roleSQL, input.roleName, "Select Role Name", "user_role_id", "role_name");
+
     dbc.close(); //close db connection
 %>
 
@@ -91,35 +91,62 @@
 
         <div class = "insideRegister">
             <br/>
-            Name
+            Username
             <!-- THE NAME ASPECT IN THE INPUT TAG MUST MATCH THE FIELD IN THE DATABASE -->
-            <input type="text" name="playerName" value = "<%out.print(input.playerName);%>"/>
+            <input type="text" name="user_name" value = "<%out.print(input.user_name);%>"/>
             <br/><br/>
-            <span class="error"><%out.print(errors.playerName);%></span>
+            <span class="error"><%out.print(errors.user_name);%></span>
             <br/>
 
             Email Address
-            <input type = "text" name ="emailAddress" value = "<%out.print(input.emailAddress);%>"/>
+            <input type = "text" name ="email" value = "<%out.print(input.email);%>"/>
             <br/><br/>
-            <span class="error"><%out.print(errors.emailAddress);%></span>
+            <span class="error"><%out.print(errors.email);%></span>
             <br/>
 
-            Password
-            <input type = "password" name="pswd" value = "<%out.print(input.pswd);%>"/>
+            First Name
+            <input type = "text" name="first_name" value = "<%out.print(input.first_name);%>"/>
             <br/><br/>
-            <span class="error"><%out.print(errors.pswd);%></span>
+            <span class="error"><%out.print(errors.first_name);%></span>
             <br/>
 
-            System ID
-            <input type = "text" name="skillLevel" value = "<%out.print(input.skillLevel);%>"/>
+            Last Name
+            <input type = "text" name="last_name" value = "<%out.print(input.last_name);%>"/>
             <br/><br/>
+            <span class="error"><%out.print(errors.last_name);%></span>
             <br/>
             
-            Role Name 
-            <span id="selectTag"><%out.print(roleSelect);%></span>
+            Phone Number
+            <input type = "text" name="phone_number" value = "<%out.print(input.phone_number);%>"/>
             <br/><br/>
-            <span class ="error"><%out.print(selectorErr);%></span>
+            <span class="error"><%out.print(errors.phone_number);%></span>
+            <br/>
             
+            Salt
+            <input type = "text" name="salt" value = "<%out.print(input.salt);%>"/>
+            <br/><br/>
+            <span class="error"><%out.print(errors.salt);%></span>
+            <br/>
+            
+            Password ID
+            <input type = "text" name="password_id" value = "<%out.print(input.password_id);%>"/>
+            <br/><br/>
+            <span class="error"><%out.print(errors.password_id);%></span>
+            <br/>
+            
+            System IP
+            <input type = "text" name="system_ip" value = "<%out.print(input.system_ip);%>"/>
+            <br/><br/>
+            <span class="error"><%out.print(errors.system_ip);%></span>
+            <br/>
+            
+
+
+            <!--Role Name 
+            <span id="selectTag"></span>
+            <br/><br/>
+            <span class ="error"></span>  -->
+
             <br/><br/>
 
         </div>

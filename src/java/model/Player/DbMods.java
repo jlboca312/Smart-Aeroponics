@@ -11,8 +11,13 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
+import java.util.TimeZone;
 
 /**
  *
@@ -29,32 +34,54 @@ public class DbMods {
             return errorMsgs;
         } else { //all fields pass validation
 
+
             /* PREPARE INITIAL SQL STATEMENT */
-            String sql = "INSERT INTO Player (player_name, email_address, pswd, skill_level, user_role_id) "
-                    + "values (?,?,?,?,?)";
+            String sql = "INSERT INTO user (user_name, email, first_name, last_name, phone_number, salt, role_id, password_id) "
+                    + "values (?,?,?,?,?,?,2,?)";
 
             /* USING SALLY'S WRAPPER PREPAREDSTATEMENT CLASS*/
             PrepStatement stmt = new PrepStatement(dbc, sql);
 
             /* FILL IN THOSE QUESTION MARKS */
-            stmt.setString(1, input.playerName);
-            stmt.setString(2, input.emailAddress);
-            stmt.setString(3, input.pswd);
-            stmt.setBigDecimal(4, ValidationUtils.decimalConversion(input.skillLevel));
-            /* FIX THIS LATER FOR ONE DECIMAL POINT OR IS IT GOOD??*/
+            stmt.setString(1, input.user_name);
+            stmt.setString(2, input.email);
+            stmt.setString(3, input.first_name);
+            stmt.setString(4, input.last_name);
+            stmt.setLong(5, ValidationUtils.longConversion(input.phone_number));
+            stmt.setInt(6, ValidationUtils.integerConversion(input.salt));
+            stmt.setInt(7, ValidationUtils.integerConversion(input.password_id));
+            
 
- /* FILLS IN QUESTION MARK FOR THE SELECT TAG INPUT*/
+            //execute sql statement
+            int numRows = stmt.executeUpdate();
+
+            
+      
+            /* CREATES ENTRY IN SYSTEM TABLE*/
+            
+            /* PREPARE INITIAL SQL STATEMENT */
+            String sql2 = "INSERT INTO system (system_ip, register_date, light_interval_start, light_interval, mist_interval_start, mist_interval, user_id) VALUES(?, sysdate(), CURRENT_TIMESTAMP, 8.0, CURRENT_TIMESTAMP, 8.0,  (SELECT MAX(user_id) from user))";
+            
+            PrepStatement stmt2 = new PrepStatement(dbc, sql2);
+            
+            //fill in question marks
+            stmt2.setString(1, input.system_ip);
+            
+            //execute sql statement
+            int numRows2 = stmt2.executeUpdate();
+
+
+            
+
+            /* FILLS IN QUESTION MARK FOR THE SELECT TAG INPUT*/
             //if role name input is not empty and not equal 0 ,indicating not 'Select Role Name'
-            if ((input.roleName.length() != 0) && !(input.roleName.equals("0"))) {
+            /* if ((input.roleName.length() != 0) && !(input.roleName.equals("0"))) {
                 stmt.setString(5, input.roleName);
-            }
-
+            }*/
             /**
              * SQL STATEMENT EXECUTED executeUpdate() returns # of rows altered
              * or successfully added
              */
-            int numRows = stmt.executeUpdate();
-
             errorMsgs.errorMsg = stmt.getErrorMsg();
 
             if (errorMsgs.errorMsg.length() == 0) { //return empty string if all is gooood, else return dem errors
@@ -64,6 +91,13 @@ public class DbMods {
                 } else {
                     // probably never get here unless you forgot your WHERE clause and did a bulk sql update.
                     errorMsgs.errorMsg = numRows + " records were inserted when exactly 1 was expected.";
+                }
+                
+                if (numRows2 == 1) {
+                    errorMsgs.errorMsg = ""; // This means SUCCESS. Let the JSP page decide how to tell this to the user.
+                } else {
+                    // probably never get here unless you forgot your WHERE clause and did a bulk sql update.
+                    errorMsgs.errorMsg = numRows2 + " records were inserted when exactly 1 was expected.fuck";
                 }
             }
 
@@ -79,16 +113,21 @@ public class DbMods {
 
         /* VALIDATION */
         //errorMsgs.playerId = ValidationUtils.stringValidationMsg(input.playerId, 45, true); //only for updateUser.jsp
-        errorMsgs.playerName = ValidationUtils.stringValidationMsg(input.playerName, 30, true);
-        errorMsgs.emailAddress = ValidationUtils.stringValidationMsg(input.emailAddress, 45, true);
-        errorMsgs.pswd = ValidationUtils.stringValidationMsg(input.pswd, 45, true);
+        errorMsgs.user_name = ValidationUtils.stringValidationMsg(input.user_name, 30, true);
+        errorMsgs.email = ValidationUtils.stringValidationMsg(input.email, 45, true);
+        errorMsgs.first_name = ValidationUtils.stringValidationMsg(input.first_name, 45, true);
+        errorMsgs.last_name = ValidationUtils.stringValidationMsg(input.last_name, 45, true);
+        errorMsgs.phone_number = ValidationUtils.stringValidationMsg(input.phone_number, 45, true);
+        errorMsgs.salt = ValidationUtils.stringValidationMsg(input.salt, 45, true);
 
-        /* Skill level can be null so don't need this validation*/
+        /* DO FOREIGN KEYS??*/
+
+ /* Skill level can be null so don't need this validation*/
         //errorMsgs.skillLevel = ValidationUtils.stringValidationMsg(input.skillLevel, true);
         return errorMsgs;
     }
 
-    public static StringData update(StringData input, DbConn dbc) {
+    /*public static StringData update(StringData input, DbConn dbc) {
         StringData errorMsgs = new StringData();
         errorMsgs = validate(input);
 
@@ -97,10 +136,10 @@ public class DbMods {
             return errorMsgs;
         } else { //all fields pass validation
 
-            /* PREPARE INITIAL SQL STATEMENT */
+            // PREPARE INITIAL SQL STATEMENT 
             String sql = "UPDATE Player SET player_name=?, email_address=?, pswd=?, skill_level=?, user_role_id=?  WHERE player_id=?";
 
-            /* USING SALLY'S WRAPPER PREPAREDSTATEMENT CLASS*/
+            //USING SALLY'S WRAPPER PREPAREDSTATEMENT CLASS
             PrepStatement stmt = new PrepStatement(dbc, sql);
 
             stmt.setString(1, input.playerName);
@@ -110,10 +149,10 @@ public class DbMods {
             stmt.setString(5, input.roleName);
             stmt.setString(6, input.playerId);
 
-            /**
-             * SQL STATEMENT EXECUTED executeUpdate() returns # of rows altered
-             * or successfully added
-             */
+            
+             //SQL STATEMENT EXECUTED executeUpdate() returns # of rows altered
+             //or successfully added
+             
             int numRows = stmt.executeUpdate();
 
             errorMsgs.errorMsg = stmt.getErrorMsg();
@@ -129,7 +168,7 @@ public class DbMods {
             }
 
         }
-        /* if returning empty string then SUCCESS!!! */
+        // if returning empty string then SUCCESS!!! 
         return errorMsgs;
 
     }
@@ -162,5 +201,5 @@ public class DbMods {
         }
 
         return message;
-    }
+    }*/
 }

@@ -17,23 +17,24 @@ import java.sql.ResultSet;
  */
 public class Logon {
 
-    public static StringData find(DbConn dbc, String emailAddress, String userPwd) {
-        StringData foundPlayer = new StringData(); // default constructor sets all fields to "" (empty string) 
+    public static StringData find(DbConn dbc, String user_name, String salt) {
+        StringData foundUser = new StringData(); // default constructor sets all fields to "" (empty string) 
         try {
             //String sql = "select customer_id, credit_limit from customer where email_address = ? and pwd = ?";
-            String sql = "select player_id, player_name, email_address, pswd from Player as P"
-                    + " where email_address = ? and pswd = ? ";
+            String sql = "select user_id, user_name, email, first_name, last_name, phone_number, salt, role_id, password_id from user where user_name = ? and salt = ?";
+                    
 
             PreparedStatement stmt = dbc.getConn().prepareStatement(sql);
             // System.out.println("*** statement prepared- no sql compile errors");
 
             // this puts the user's input (from variable emailAddress) into the 1st question mark of the sql statement above. 
-            stmt.setString(1, emailAddress);
+            stmt.setString(1, user_name);
             // System.out.println("*** email address substituted into the sql");
 
             // this puts the user's input (from variable userPwd) into the 2nd question mark of the sql statement above. 
-            stmt.setString(2, userPwd);
+            stmt.setString(2, salt);
             // System.out.println("*** pwd substituted into the sql");
+            
 
             ResultSet results = stmt.executeQuery();
             // System.out.println("*** query executed");
@@ -43,20 +44,27 @@ public class Logon {
             if (results.next()) {
                 //System.out.println("*** record selected");
                 //foundPlayer.playerId = (int) results.getObject("player_id");
-                foundPlayer.playerId = results.getObject("player_id").toString();
-                foundPlayer.playerName = results.getObject("player_name").toString();
+                foundUser.userId = results.getObject("user_id").toString();
+                //foundUser.user_name = results.getObject("user_name").toString(); // we can take this from input parameter instead of db. 
+                foundUser.user_name = user_name;
+                foundUser.email = results.getObject("email").toString();
                 //foundPlayer.playerName = FormatUtils.formatStringTd(results.getObject("player_name"));
-                foundPlayer.emailAddress = emailAddress; // we can take this from input parameter instead of db. 
+                foundUser.first_name = results.getObject("first_name").toString();
+                foundUser.last_name = results.getObject("last_name").toString();
+                foundUser.phone_number = results.getObject("phone_number").toString();
+                foundUser.salt = results.getObject("salt").toString();
+                foundUser.role_id = results.getObject("role_id").toString();
+                foundUser.password_id = results.getObject("password_id").toString();
                 //foundPlayer.pswd = FormatUtils.formatStringTd(results.getObject("pswd"));
-                foundPlayer.pswd = results.getObject("pswd").toString();
+                
                 //System.out.println("*** 5 fields extracted from result set");
-                return foundPlayer;
+                return foundUser;
             } else {
                 return null; // means player not found with given credentials.
             }
         } catch (Exception e) {
-            foundPlayer.errorMsg = "Exception thrown in Logon.find(): " + e.getMessage();
-            return foundPlayer;
+            foundUser.errorMsg = "Exception thrown in Logon.find(): " + e.getMessage();
+            return foundUser;
         }
     }
 

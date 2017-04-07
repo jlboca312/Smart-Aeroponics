@@ -44,37 +44,41 @@
 
 <%
 
-    String strEmail = "";
-    String strPswd = "";
-    String emailErrorMsg = ""; // be optimistic
-    String pswdErrorMsg = ""; // dont show an error upon 1st rendering
+    String strUserName = "";
+    String strSalt = "";
+    String userNameErrorMsg = ""; // be optimistic
+    String saltErrorMsg = ""; // dont show an error upon 1st rendering
     String connErrorMsg = ""; //error message for connection failure
     String welcomeMsg = ""; //message to welcome user if logon successful
     String msg = ""; // this is an overall messsage (beyond field level validation)
     boolean success = false; //variable to state whether log on was successful or not
 
-    if (request.getParameter("emailAddress") != null) {
-        strEmail = request.getParameter("emailAddress"); //extract user input from URL
-        if (strEmail.length() == 0) {
-            emailErrorMsg = "Email Address is a required field";
+    if (request.getParameter("user_name") != null) {
+        strUserName = request.getParameter("user_name"); //extract user input from URL
+        if (strUserName.length() == 0) {
+            userNameErrorMsg = "User Name is a required field";
         }
-        strPswd = request.getParameter("pswd"); //extract user input from URL
-        if (strPswd.length() == 0) {
-            pswdErrorMsg = "Password is a required field";
+        strSalt = request.getParameter("salt"); //extract user input from URL
+        if (strSalt.length() == 0) {
+            saltErrorMsg = "Salt is a required field";
         }
 
+        
+        
         DbConn dbc = new DbConn(); //get database connection
 
         if (connErrorMsg.length() == 0) { // no error message so database connection OK
-            StringData loggedOnPlayer = Logon.find(dbc, strEmail, strPswd);
+            StringData loggedOnUser = Logon.find(dbc, strUserName, strSalt);
 
-            if (loggedOnPlayer != null) {
-                session.setAttribute("player", loggedOnPlayer);
+            System.out.println("***FUUUUUCK " + loggedOnUser.errorMsg);
+            
+            if (loggedOnUser != null) {
+                session.setAttribute("user", loggedOnUser);
                 success = true;
             }
 
-            if (success && (loggedOnPlayer.playerName.length() > 0)) {
-                welcomeMsg = "Log In Successful, Welcome " + loggedOnPlayer.playerName + " !";
+            if (success && (loggedOnUser.user_name.length() > 0)) {
+                welcomeMsg = "Log In Successful, Welcome " + loggedOnUser.user_name + " !";
             } else {
                 welcomeMsg = "Log In Failed. Username and Password invalid.";
             }
@@ -90,15 +94,15 @@
     <form action="logon.jsp" method="post">
 
         <div class = "insideLogon">
-            Please enter your Email Address 
-            <input name="emailAddress" value="<%out.print(strEmail);%>"/>
+            Please enter your Username 
+            <input name="user_name" value="<%out.print(strUserName);%>"/>
             <br/>
-            <span class="error"><%=emailErrorMsg%></span>
+            <span class="error"><%=userNameErrorMsg%></span>
             <br/> <br/>
-            Please enter your Password 
-            <input name ="pswd" type = "password" value="<%out.print(strPswd);%>"/>
+            Please enter your Salt 
+            <input name ="salt" type = "password" value="<%out.print(strSalt);%>"/>
             <br/>
-            <span class="error"><%=pswdErrorMsg%></span>
+            <span class="error"><%=saltErrorMsg%></span>
             <br/><br/>
         </div>
 

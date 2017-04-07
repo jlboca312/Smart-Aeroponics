@@ -82,6 +82,24 @@ public class PrepStatement {
             return msg;
         }
     }
+    
+     public String setLong(int position, Long newLong) {
+        try {
+            if (newLong == null) {
+                ps.setNull(position, java.sql.Types.INTEGER);
+
+            } else {
+                this.ps.setLong(position, newLong);
+            }
+            return ""; // no error
+        } catch (Exception e) {
+            String msg = " PrepStatement: Exception in setLong(). Sql is " + this.sql
+                    + ", position: " + position + ". Error Msg: " + e.getMessage();
+            System.out.println("====> " + msg);
+            this.errorMsg += msg;
+            return msg;
+        }
+    }
 
     // Replace the position-th question mark with newBigDecimal.
     // If newBigDecimal is null, encode null into that question mark.

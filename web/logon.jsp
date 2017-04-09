@@ -70,7 +70,6 @@
         if (connErrorMsg.length() == 0) { // no error message so database connection OK
             StringData loggedOnUser = Logon.find(dbc, strUserName, strSalt);
 
-            System.out.println("***FUUUUUCK " + loggedOnUser.errorMsg);
             
             if (loggedOnUser != null) {
                 session.setAttribute("user", loggedOnUser);
@@ -78,7 +77,7 @@
             }
 
             if (success && (loggedOnUser.user_name.length() > 0)) {
-                welcomeMsg = "Log In Successful, Welcome " + loggedOnUser.user_name + " !";
+                welcomeMsg = "Log In Successful, Welcome " + loggedOnUser.user_name + "!";
             } else {
                 welcomeMsg = "Log In Failed. Username and Password invalid.";
             }

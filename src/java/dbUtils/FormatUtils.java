@@ -96,6 +96,20 @@ public class FormatUtils {
         out += "</td>";
         return out;
     } // formatDecimalTd
+    
+    public static String formatDecimalTdSA(Object obj) {
+        //String out = "<td style='text-align:right'>";
+        String strDecimalAmt = formatDecimal(obj);
+        /*if (strDecimalAmt.length() == 0) {
+            // if you don't put a "non-breaking space" in an empty td/cell, 
+            // the cell's border doesn't show !
+            out += "&nbsp;";
+        } else {
+            out += strDecimalAmt;
+        }
+        out += "</td>";*/
+        return strDecimalAmt;
+    } // formatDecimalTd
 
     public static String formatInteger(Object obj) {
         if (obj == null) {
@@ -124,6 +138,20 @@ public class FormatUtils {
         out += "</td>";
         return out;
     } // formatIntegerTd
+    
+    public static String formatIntegerTdSA(Object obj) {
+        //String out = "<td style='text-align:right'>";
+        String strInteger = formatInteger(obj);
+        /*if (strInteger.length() == 0) {
+            // if you don't put a "non-breaking space" in an empty td/cell, 
+            // the cell's border doesn't show !
+            out += "&nbsp;";
+        } else {
+            out += strInteger;
+        }
+        out += "</td>";*/
+        return strInteger;
+    } // formatIntegerTd
 
     // this is not really formatting, but just converting to string type.
     public static String formatString(Object obj) {
@@ -144,6 +172,19 @@ public class FormatUtils {
         }
         out += "</td>";
         return out;
+    } // formatString
+    
+    //for smart aeroponics data
+    public static String formatStringTdSA(Object obj) {
+        //String out = "<td style='text-align:center'>";
+        String str = formatString(obj);
+        /*if (str.length() == 0) {
+            out += "&nbsp;";
+        } else {
+            out += str;
+        }
+        out += "</td>";*/
+        return str;
     } // formatString
     
     public static String objectToString(Object o) {

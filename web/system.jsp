@@ -1,4 +1,6 @@
 
+<%@page import="model.Player.StringSystemData"%>
+<%@page import="model.Player.SystemData"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <jsp:include page="jspIncludes/toHead.jsp" />
@@ -127,6 +129,8 @@
     String msg = ""; //overrall message
 
     StringData loggedOnUser = (StringData) session.getAttribute("user"); //gets object/attribute set from logon.jsp
+    //StringData loggedOnUser = new StringData();
+    //loggedOnUser.userId = "17";
 
     if (loggedOnUser == null) { //meaning user is not logged in
         try {
@@ -137,7 +141,11 @@
             msg += " Exception was thrown: " + e.getMessage();
         }
 
+    } else { //user is logged in 
+
     }
+
+
 %>
 
 <jsp:include page="jspIncludes/headToContent.jsp" />
@@ -198,7 +206,7 @@
         unless you're growing cacti!</p> 
 </div>
 
-
+<!--
 <div id="water">
     <canvas id="waterChart" width="50" height="20" ></canvas>
 </div>
@@ -218,22 +226,89 @@
     <h1>Light </h1>
     <p>Here you can control whether your system light is on or off. This chart simply
         shows the status of your light.</p> 
-</div>
+</div> 
+
+-->
 <script>
+
+    <%        DbConn dbc = new DbConn(); //get database connection    
+
+        StringSystemData sysData[] = SystemData.retrieve(dbc, loggedOnUser.userId);
+        //StringSystemData sysData = SystemData.retrieve(dbc, loggedOnUser.userId);
+
+        //Float air_temp_float = Float.parseFloat(sysData.air_temp);
+        int sslh_id[] = new int[sysData.length];
+        float air_temp[] = new float[sysData.length],
+                water_temp[] = new float[sysData.length],
+                humidity[] = new float[sysData.length];
+        int water_level[] = new int[sysData.length];
+        boolean light_on_off[] = new boolean[sysData.length];
+        String date_logged[] = new String[sysData.length];
+        int system_id[] = new int[sysData.length];
+
+        int counter;
+        for (counter = 0; counter < sysData.length; counter++) {
+            sslh_id[counter] = Integer.parseInt(sysData[counter].system_status_log_hourly_id);
+            air_temp[counter] = Float.parseFloat(sysData[counter].air_temp);
+            water_temp[counter] = Float.parseFloat(sysData[counter].water_temp);
+            humidity[counter] = Float.parseFloat(sysData[counter].humidity);
+            water_level[counter] = Integer.parseInt(sysData[counter].water_level);
+            light_on_off[counter] = Boolean.parseBoolean(sysData[counter].light_on_off);
+            date_logged[counter] = sysData[counter].date_logged;
+            system_id[counter] = Integer.parseInt(sysData[counter].system_id);
+        }
+        counter = 0;
+
+    %>
+
+
+
+
+
+
+    //initializing all DB data arrays
+    var dbAirTempData = [];
+    var dbWaterTempData = [];
+    var dbHumidityData = [];
+
+    //PUTS JAVA ARRAY INTO JAVASCRIPT ARRAY
+
+    //for airTempData
+    <%for (int jk = 0; jk < sysData.length; jk++) {%>
+    dbAirTempData.push("<%=air_temp[jk]%>");
+    <%}%>
+
+    //for waterTempData
+    <%for (int jk = 0; jk < sysData.length; jk++) {%>
+    dbWaterTempData.push("<%=water_temp[jk]%>");
+    <%}%>
+
+    //for humidityData
+    <%for (int jk = 0; jk < sysData.length; jk++) {%>
+    dbHumidityData.push("<%=humidity[jk]%>");
+    <%}%>
+        
+    //alert("air_temp: " + dbAirTempData);
+
+    var sensorHighDataCollected = [1, 0, -1, -1], sensorMedDataCollected = [1, 1, -1, -1], sensorLowDataCollected = [1, 1, -1, -1];
+
+    //HARDCODED VALUES FOR TESTING CHART 
+    //var dbAirTempData = [69.0];
+    //var dbWaterTempData = [66, 55];
+    //var dbHumidityData = [0.6, 0.7];
+
+
+
+
 
     //AIR TEMPERATURE
 
-    var dbAirTempData = [70, 71, -1, -1];
-    var hoursCollected = 0;
-    var airTempDataCollected = [];
+
+    var hoursCollected = "<%=sysData.length%>";
     var hourLabels = [];
 
-    for (hoursCollected; dbAirTempData[hoursCollected] !== -1; hoursCollected++) {
-        airTempDataCollected[hoursCollected] = dbAirTempData[hoursCollected];
-    }
-
-    for (var i = 0; i < hoursCollected; i++) {
-        hourLabels[i] = (i + 1) + ":00";
+    for (var j = 0; j < hoursCollected; j++) {
+        hourLabels[j] = (j + 1) + ":00";
     }
 
 
@@ -241,7 +316,7 @@
         labels: hourLabels,
         datasets: [{
                 label: 'Air Temperature',
-                data: airTempDataCollected,
+                data: dbAirTempData,
                 backgroundColor: "rgba(3, 178, 39,0.75)"
             }]
 
@@ -261,7 +336,7 @@
                 xAxes: [{
                         scaleLabel: {
                             display: true,
-                            labelString: 'Days of the Week'
+                            labelString: 'Hours'
                         }
                     }]
 
@@ -274,22 +349,11 @@
 
     //WATER TEMPERATURE
 
-
-
-    var dbWaterTempData = [70, 71, -1, -1];
-    var waterTempDataCollected = [];
-    var i = 0;
-
-    for (i; i < hoursCollected; i++) {
-        waterTempDataCollected[i] = dbWaterTempData[i];
-    }
-
-
     var waterTempData = {
         labels: hourLabels,
         datasets: [{
                 label: 'Water Temperature',
-                data: waterTempDataCollected,
+                data: dbWaterTempData,
                 backgroundColor: "rgba(66,240,244,0.75)"
             }]
 
@@ -309,7 +373,7 @@
                 xAxes: [{
                         scaleLabel: {
                             display: true,
-                            labelString: 'Days of the Week'
+                            labelString: 'Hours'
                         }
                     }]
 
@@ -321,19 +385,11 @@
 
     //HUMIDITY 
 
-    var dbHumidityTempData = [0.7, 0.71, -1, -1];
-    var humidityDataCollected = [];
-    i = 0;
-
-    for (i; i < hoursCollected; i++) {
-        humidityDataCollected[i] = dbHumidityTempData[i];
-    }
-
     var humidityData = {
         labels: hourLabels,
         datasets: [{
                 label: 'Humidity',
-                data: humidityDataCollected,
+                data: dbHumidityData,
                 backgroundColor: "rgba(255, 255, 102,0.75)"
             }]
 
@@ -353,7 +409,7 @@
                 xAxes: [{
                         scaleLabel: {
                             display: true,
-                            labelString: 'Days of the Week'
+                            labelString: 'Hours'
                         }
                     }]
 
@@ -365,106 +421,108 @@
 
     //WATER LEVEL
 
-    var sensorHighDataCollected = [1, 0, -1, -1], sensorMedDataCollected = [1, 1, -1, -1], sensorLowDataCollected = [1, 1, -1, -1];
-    var floatSensorHighMapped = [], floatSensorMedMapped = [], floatSensorLowMapped = [], noWater = [];
-    i = 0;
 
-    for (i; i < hoursCollected; i++) {
-
-        switch (sensorHighDataCollected[i]) {
-            case 1:
-                floatSensorHighMapped[i] = 3;
-                break;
-            case 0:
-                floatSensorHighMapped[i] = 2;
-                break;
-        }
-
-        switch (sensorMedDataCollected[i]) {
-            case 1:
-                floatSensorMedMapped[i] = 2;
-                break;
-            case 0:
-                floatSensorMedMapped[i] = 1;
-                break;
-        }
-
-        switch (sensorLowDataCollected[i]) {
-            case 1:
-                floatSensorLowMapped[i] = 1;
-                break;
-            case 0:
-                floatSensorLowMapped[i] = 0;
-                break;
-        }
-        
-        noWater[i] = 0;
-    }
-
-    var waterLevelData = {
-        labels: hourLabels,
-        datasets: [{
-                label: 'High',
-                data: floatSensorHighMapped,
-                backgroundColor: "rgba(0,71,171,0.75)"
-            },
-            {
-                label: 'Medium',
-                data: floatSensorMedMapped,
-                backgroundColor: "rgba(0,71,171,0.75)"
-            },
-            {
-                label: 'Low',
-                data: floatSensorLowMapped,
-                backgroundColor: "rgba(0,71,171,0.75)"
-            },
-            {
-                label: '',
-                data: noWater,
-                backgroundColor: "rgba(0,71,171,0.75)"
-            }]
-
-    };
-
-    var ctx4 = document.getElementById('waterChart').getContext('2d');
-    var waterChart = new Chart(ctx4, {
-        type: 'line',
-        data: waterLevelData, options: {
-            scales: {
-                yAxes: [{
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Water Level'
-                        }
-                    }],
-                xAxes: [{
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Days of the Week'
-                        }
-                    }]
-
-            }
-        }
-
-    });
-
-    var lightData = {
-        labels: ["On", "Off"],
-        datasets: [{
-                label: 'Light Bulb',
-                data: [1, 1],
-                backgroundColor: ["rgba(50, 242, 111, 0.75)", "rgba(244, 48, 48, 0.75)"]
-            }]
-
-    };
-
-    var ctx5 = document.getElementById('lightChart').getContext('2d');
-    var lightChart = new Chart(ctx5, {
-        type: 'doughnut',
-        data: lightData
-
-    });
+    /*    var floatSensorHighMapped = [], floatSensorMedMapped = [], floatSensorLowMapped = [], noWater = [];
+     i = 0;
+     
+     for (i; i < hoursCollected; i++) {
+     
+     switch (sensorHighDataCollected[i]) {
+     case 1:
+     floatSensorHighMapped[i] = 3;
+     break;
+     case 0:
+     floatSensorHighMapped[i] = 2;
+     break;
+     }
+     
+     switch (sensorMedDataCollected[i]) {
+     case 1:
+     floatSensorMedMapped[i] = 2;
+     break;
+     case 0:
+     floatSensorMedMapped[i] = 1;
+     break;
+     }
+     
+     switch (sensorLowDataCollected[i]) {
+     case 1:
+     floatSensorLowMapped[i] = 1;
+     break;
+     case 0:
+     floatSensorLowMapped[i] = 0;
+     break;
+     }
+     
+     noWater[i] = 0;
+     }
+     
+     var waterLevelData = {
+     labels: hourLabels,
+     datasets: [{
+     label: 'High',
+     data: floatSensorHighMapped,
+     backgroundColor: "rgba(0,71,171,0.75)"
+     },
+     {
+     label: 'Medium',
+     data: floatSensorMedMapped,
+     backgroundColor: "rgba(0,71,171,0.75)"
+     },
+     {
+     label: 'Low',
+     data: floatSensorLowMapped,
+     backgroundColor: "rgba(0,71,171,0.75)"
+     },
+     {
+     label: '',
+     data: noWater,
+     backgroundColor: "rgba(0,71,171,0.75)"
+     }]
+     
+     };
+     
+     var ctx4 = document.getElementById('waterChart').getContext('2d');
+     var waterChart = new Chart(ctx4, {
+     type: 'line',
+     data: waterLevelData, options: {
+     scales: {
+     yAxes: [{
+     scaleLabel: {
+     display: true,
+     labelString: 'Water Level'
+     }
+     }],
+     xAxes: [{
+     scaleLabel: {
+     display: true,
+     labelString: 'Days of the Week'
+     }
+     }]
+     
+     }
+     }
+     
+     });
+     
+     var lightData = {
+     labels: ["On", "Off"],
+     datasets: [{
+     label: 'Light Bulb',
+     data: [1, 1],
+     backgroundColor: ["rgba(50, 242, 111, 0.75)", "rgba(244, 48, 48, 0.75)"]
+     }]
+     
+     };
+     
+     var ctx5 = document.getElementById('lightChart').getContext('2d');
+     var lightChart = new Chart(ctx5, {
+     type: 'doughnut',
+     data: lightData
+     
+     });
+     
+     */
 
 
 </script>

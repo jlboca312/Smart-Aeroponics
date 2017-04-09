@@ -125,28 +125,7 @@
 
 </style>
 
-<%
-    String msg = ""; //overrall message
-
-    StringData loggedOnUser = (StringData) session.getAttribute("user"); //gets object/attribute set from logon.jsp
-    //StringData loggedOnUser = new StringData();
-    //loggedOnUser.userId = "17";
-
-    if (loggedOnUser == null) { //meaning user is not logged in
-        try {
-            // Will send user to deny.jsp page if not logged in 
-            response.sendRedirect("deny.jsp?denyMsg=Log on to view your system's diagnostics.");
-            //response.sendRedirect("chart.jsp");
-        } catch (Exception e) {
-            msg += " Exception was thrown: " + e.getMessage();
-        }
-
-    } else { //user is logged in 
-
-    }
-
-
-%>
+<!-- ALL JSP AND JAVASCRIPT CODE IS BELOW THE HTML-->
 
 <jsp:include page="jspIncludes/headToContent.jsp" />
 
@@ -231,33 +210,53 @@
 -->
 <script>
 
-    <%        DbConn dbc = new DbConn(); //get database connection    
+    <%        String msg = ""; //overrall message
 
-        StringSystemData sysData[] = SystemData.retrieve(dbc, loggedOnUser.userId);
-        //StringSystemData sysData = SystemData.retrieve(dbc, loggedOnUser.userId);
+        StringData loggedOnUser = (StringData) session.getAttribute("user"); //gets object/attribute set from logon.jsp
+        //StringData loggedOnUser = new StringData();
+        //loggedOnUser.userId = "17";
 
-        //Float air_temp_float = Float.parseFloat(sysData.air_temp);
-        int sslh_id[] = new int[sysData.length];
-        float air_temp[] = new float[sysData.length],
-                water_temp[] = new float[sysData.length],
-                humidity[] = new float[sysData.length];
-        int water_level[] = new int[sysData.length];
-        boolean light_on_off[] = new boolean[sysData.length];
-        String date_logged[] = new String[sysData.length];
-        int system_id[] = new int[sysData.length];
+        if (loggedOnUser == null) { //meaning user is not logged in
+            try {
+                // Will send user to deny.jsp page if not logged in 
+                response.sendRedirect("deny.jsp?denyMsg=Log on to view your system's diagnostics.");
+                //response.sendRedirect("chart.jsp");
+            } catch (Exception e) {
+                msg += " Exception was thrown: " + e.getMessage();
+            }
 
-        int counter;
-        for (counter = 0; counter < sysData.length; counter++) {
-            sslh_id[counter] = Integer.parseInt(sysData[counter].system_status_log_hourly_id);
-            air_temp[counter] = Float.parseFloat(sysData[counter].air_temp);
-            water_temp[counter] = Float.parseFloat(sysData[counter].water_temp);
-            humidity[counter] = Float.parseFloat(sysData[counter].humidity);
-            water_level[counter] = Integer.parseInt(sysData[counter].water_level);
-            light_on_off[counter] = Boolean.parseBoolean(sysData[counter].light_on_off);
-            date_logged[counter] = sysData[counter].date_logged;
-            system_id[counter] = Integer.parseInt(sysData[counter].system_id);
-        }
-        counter = 0;
+        } else { //user is logged in 
+
+            DbConn dbc = new DbConn(); //get database connection    
+
+            //put data from DB into sysData
+            StringSystemData sysData[] = SystemData.retrieve(dbc, loggedOnUser.userId);
+            //StringSystemData sysData = SystemData.retrieve(dbc, loggedOnUser.userId);
+
+            //initialize separate arrays for each sensor
+            int sslh_id[] = new int[sysData.length];
+            float air_temp[] = new float[sysData.length],
+                    water_temp[] = new float[sysData.length],
+                    humidity[] = new float[sysData.length];
+            int water_level[] = new int[sysData.length];
+            boolean light_on_off[] = new boolean[sysData.length];
+            String date_logged[] = new String[sysData.length];
+            int system_id[] = new int[sysData.length];
+
+            //fill initialized  arrays with the data from DB
+            int counter;
+            for (counter = 0; counter < sysData.length; counter++) {
+                sslh_id[counter] = Integer.parseInt(sysData[counter].system_status_log_hourly_id);
+                air_temp[counter] = Float.parseFloat(sysData[counter].air_temp);
+                water_temp[counter] = Float.parseFloat(sysData[counter].water_temp);
+                humidity[counter] = Float.parseFloat(sysData[counter].humidity);
+                water_level[counter] = Integer.parseInt(sysData[counter].water_level);
+                light_on_off[counter] = Boolean.parseBoolean(sysData[counter].light_on_off);
+                date_logged[counter] = sysData[counter].date_logged;
+                system_id[counter] = Integer.parseInt(sysData[counter].system_id);
+            }
+            counter = 0;
+        
 
     %>
 
@@ -287,7 +286,7 @@
     <%for (int jk = 0; jk < sysData.length; jk++) {%>
     dbHumidityData.push("<%=humidity[jk]%>");
     <%}%>
-        
+
     //alert("air_temp: " + dbAirTempData);
 
     var sensorHighDataCollected = [1, 0, -1, -1], sensorMedDataCollected = [1, 1, -1, -1], sensorLowDataCollected = [1, 1, -1, -1];
@@ -522,8 +521,13 @@
      
      });
      
+     
+   
      */
 
+
+     //FOR CLOSING THE ELSE STATEMENT -- MEANING USER IS LOGGED IN
+     <% }%>
 
 </script>
 

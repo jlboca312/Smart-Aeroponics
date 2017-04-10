@@ -98,7 +98,7 @@
             <br/>
             <span class="error"><%=userNameErrorMsg%></span>
             <br/> <br/>
-            Please enter your Salt 
+            Please enter your Password 
             <input name ="salt" type = "password" value="<%out.print(strSalt);%>"/>
             <br/>
             <span class="error"><%=saltErrorMsg%></span>

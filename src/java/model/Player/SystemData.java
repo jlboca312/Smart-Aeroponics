@@ -20,51 +20,7 @@ import java.util.logging.Logger;
  */
 public class SystemData {
 
-    /*public static StringSystemData retrieve(DbConn dbc, String user_id) {
-        StringSystemData sysData = new StringSystemData(); // default constructor sets all fields to "" (empty string) 
-        try {
-            //String sql = "select customer_id, credit_limit from customer where email_address = ? and pwd = ?";
-            String sql = "SELECT system_status_log_hourly_id, air_temp, water_temp, humidity, water_level, light_on_off, date_logged, s.system_id FROM system_status_log_hourly AS sslh, system AS s WHERE sslh.system_id = s.system_id AND s.user_id = ?";
-                    
 
-            PreparedStatement stmt = dbc.getConn().prepareStatement(sql);
-            // System.out.println("*** statement prepared- no sql compile errors");
-
-            // this puts user id into sql statement above 
-            stmt.setString(1, user_id);
-
-            ResultSet results = stmt.executeQuery();
-                                  
-            // System.out.println("*** query executed");
-
-           
-            //HAS TO BE A WHILE LOOP TO SUPPORT MULTIPLE ARUINO SYSTEMS
-            
-            int i = 0;
-            if(results.next()) {
-                sysData.system_status_log_hourly_id = results.getObject("system_status_log_hourly_id").toString();
-                sysData.air_temp = results.getObject("air_temp").toString();
-                sysData.water_temp = results.getObject("water_temp").toString();
-                sysData.humidity = results.getObject("humidity").toString();
-                sysData.water_level = results.getObject("water_level").toString();
-                sysData.light_on_off = results.getObject("light_on_off").toString();
-                sysData.date_logged = results.getObject("date_logged").toString();
-                sysData.system_id = results.getObject("system_id").toString();
-
-                return sysData;
-                //System.out.println("*** 5 fields extracted from result set");
-            }else {
-                return null; // means player not found with given credentials.
-            }
-            
-            
-            
-            
-        } catch (Exception e) {
-            sysData.errorMsg = "Exception thrown in SystemData.retrieve(): " + e.getMessage();
-            return sysData;
-        }
-    }*/
     public static int getNumRows(DbConn dbc, String user_id) {
         int size = 0;
         

@@ -62,6 +62,24 @@ public class PrepStatement {
             return msg;
         }
     }
+    
+    public String setTime(int position, java.sql.Time newTime) {
+        try {
+            if (newTime == null) {
+                ps.setNull(position, java.sql.Types.TIME);
+
+            } else {
+                this.ps.setTime(position, newTime);
+            }
+            return ""; // no error
+        } catch (Exception e) {
+            String msg = " PrepStatement: Exception in setTime(). Sql is " + this.sql
+                    + ", position: " + position + ". Error Msg: " + e.getMessage();
+            System.out.println("====> " + msg);
+            this.errorMsg += msg;
+            return msg;
+        }
+    }
 
     // Replace the position-th question mark with newInt.
     // If newInt is null, encode null into that question mark.

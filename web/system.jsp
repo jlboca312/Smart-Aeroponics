@@ -25,6 +25,10 @@
         /*-webkit-text-stroke-width: 2px;
         -webkit-text-stroke-color: black;*/
     }
+    
+    .jumbo .container p{
+        font-size: 20px;
+    }
 
     #airTemp{
         width: 550px;
@@ -133,7 +137,7 @@
 <div class="jumbo">
     <div class="container">
         <h1>YOUR <br> SYSTEM</h1>
-        <p><a href="users.jsp">Click here to view table of users.</a></p>
+        <p><a href="users.jsp">Click Here to Control<br> Your Aeroponics System</a></p>
 
     </div>
 </div>
@@ -212,9 +216,9 @@
 
     <%        String msg = ""; //overrall message
 
-        StringData loggedOnUser = (StringData) session.getAttribute("user"); //gets object/attribute set from logon.jsp
-        //StringData loggedOnUser = new StringData();
-        //loggedOnUser.userId = "17";
+        //StringData loggedOnUser = (StringData) session.getAttribute("user"); //gets object/attribute set from logon.jsp
+        StringData loggedOnUser = new StringData();
+        loggedOnUser.userId = "17";
 
         if (loggedOnUser == null) { //meaning user is not logged in
             try {

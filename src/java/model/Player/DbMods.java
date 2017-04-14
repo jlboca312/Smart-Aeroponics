@@ -36,8 +36,8 @@ public class DbMods {
 
 
             /* PREPARE INITIAL SQL STATEMENT */
-            String sql = "INSERT INTO user (user_name, email, first_name, last_name, phone_number, salt, role_id, password_id) "
-                    + "values (?,?,?,?,?,?,2,?)";
+            String sql = "INSERT INTO user (user_name, email, first_name, last_name, phone_number, password, role_id) "
+                    + "values (?,?,?,?,?,?,2)";
 
             /* USING SALLY'S WRAPPER PREPAREDSTATEMENT CLASS*/
             PrepStatement stmt = new PrepStatement(dbc, sql);
@@ -48,8 +48,7 @@ public class DbMods {
             stmt.setString(3, input.first_name);
             stmt.setString(4, input.last_name);
             stmt.setLong(5, ValidationUtils.longConversion(input.phone_number));
-            stmt.setInt(6, ValidationUtils.integerConversion(input.salt));
-            stmt.setInt(7, ValidationUtils.integerConversion(input.password_id));
+            stmt.setString(6, input.password);
 
             //execute sql statement
             int numRows = stmt.executeUpdate();
@@ -112,8 +111,8 @@ public class DbMods {
 
             /* PREPARE INITIAL SQL STATEMENT */
             String sql = "UPDATE system"
-                    + "SET light_interval_start = ?, light_interval = ?, mist_interval_on = ?, mist_interval_off = ?"
-                    + "WHERE system_id = ?";
+                    + " SET light_interval_start = ?, light_interval = ?, mist_interval_on = ?, mist_interval_off = ?"
+                    + " WHERE system_id = ?";
 
             /* USING SALLY'S WRAPPER PREPAREDSTATEMENT CLASS*/
             PrepStatement stmt = new PrepStatement(dbc, sql);
@@ -127,6 +126,20 @@ public class DbMods {
 
             //execute sql statement
             int numRows = stmt.executeUpdate();
+            
+            //INSERTING INTO LOG TABLE
+            
+            String sql2 = "INSERT INTO system_command_log (date, log_info, system_id) VALUES(sysdate(), ?, ?)";
+
+            /* USING SALLY'S WRAPPER PREPAREDSTATEMENT CLASS*/
+            PrepStatement stmt2 = new PrepStatement(dbc, sql2);
+
+            /* FILL IN THOSE QUESTION MARKS */
+            stmt2.setString(1, "Updated the fucking shit.");
+            stmt2.setInt(2, ValidationUtils.integerConversion(system_id));
+
+            //execute sql statement
+            int numRows2 = stmt2.executeUpdate();
 
            
 
@@ -139,6 +152,13 @@ public class DbMods {
                 } else {
                     // probably never get here unless you forgot your WHERE clause and did a bulk sql update.
                     errorMsgs.errorMsg = numRows + " records were inserted when exactly 1 was expected.";
+                }
+                
+                if (numRows2 == 1) {
+                    errorMsgs.errorMsg = ""; // This means SUCCESS. Let the JSP page decide how to tell this to the user.
+                } else {
+                    // probably never get here unless you forgot your WHERE clause and did a bulk sql update.
+                    errorMsgs.errorMsg = numRows2 + " records were inserted when exactly 1 was expected.";
                 }
 
             }
@@ -159,7 +179,7 @@ public class DbMods {
         errorMsgs.first_name = ValidationUtils.stringValidationMsg(input.first_name, 45, true);
         errorMsgs.last_name = ValidationUtils.stringValidationMsg(input.last_name, 45, true);
         errorMsgs.phone_number = ValidationUtils.stringValidationMsg(input.phone_number, 45, true);
-        errorMsgs.salt = ValidationUtils.stringValidationMsg(input.salt, 45, true);
+        errorMsgs.password = ValidationUtils.stringValidationMsg(input.password, 45, true);
 
         /* DO FOREIGN KEYS??*/
 
@@ -179,7 +199,7 @@ public class DbMods {
         errorMsgs.first_name = ValidationUtils.stringValidationMsg(input.first_name, 45, true);
         errorMsgs.last_name = ValidationUtils.stringValidationMsg(input.last_name, 45, true);
         errorMsgs.phone_number = ValidationUtils.stringValidationMsg(input.phone_number, 45, true);
-        errorMsgs.salt = ValidationUtils.stringValidationMsg(input.salt, 45, true);
+        errorMsgs.password = ValidationUtils.stringValidationMsg(input.password, 45, true);
 
         //DO FOREIGN KEYS??
 

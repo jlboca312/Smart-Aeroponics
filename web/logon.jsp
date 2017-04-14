@@ -45,9 +45,9 @@
 <%
 
     String strUserName = "";
-    String strSalt = "";
+    String strPassword = "";
     String userNameErrorMsg = ""; // be optimistic
-    String saltErrorMsg = ""; // dont show an error upon 1st rendering
+    String passwordErrorMsg = ""; // dont show an error upon 1st rendering
     String connErrorMsg = ""; //error message for connection failure
     String welcomeMsg = ""; //message to welcome user if logon successful
     String msg = ""; // this is an overall messsage (beyond field level validation)
@@ -58,9 +58,9 @@
         if (strUserName.length() == 0) {
             userNameErrorMsg = "User Name is a required field";
         }
-        strSalt = request.getParameter("salt"); //extract user input from URL
-        if (strSalt.length() == 0) {
-            saltErrorMsg = "Salt is a required field";
+        strPassword = request.getParameter("password"); //extract user input from URL
+        if (strPassword.length() == 0) {
+            passwordErrorMsg = "Password is a required field";
         }
 
         
@@ -68,7 +68,7 @@
         DbConn dbc = new DbConn(); //get database connection
 
         if (connErrorMsg.length() == 0) { // no error message so database connection OK
-            StringData loggedOnUser = Logon.find(dbc, strUserName, strSalt);
+            StringData loggedOnUser = Logon.find(dbc, strUserName, strPassword);
 
             
             if (loggedOnUser != null) {
@@ -99,9 +99,9 @@
             <span class="error"><%=userNameErrorMsg%></span>
             <br/> <br/>
             Please enter your Password 
-            <input name ="salt" type = "password" value="<%out.print(strSalt);%>"/>
+            <input name ="password" type = "password" value="<%out.print(strPassword);%>"/>
             <br/>
-            <span class="error"><%=saltErrorMsg%></span>
+            <span class="error"><%=passwordErrorMsg%></span>
             <br/><br/>
         </div>
 

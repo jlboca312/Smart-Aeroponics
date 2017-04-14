@@ -40,7 +40,6 @@
 </style>
 
 <%
-    StringData loggedOnUser = (StringData) session.getAttribute("user");
     
     DbConn dbc = new DbConn(); //get database connection
     StringArduinoData input = new StringArduinoData();
@@ -61,10 +60,7 @@
             selectorErr = "Must Select a Role Name";
         }*/
         
-
-    }
-    
-    if ((errors.errorMsg.length() == 0)) { //if no error message so database connection is good
+        if ((errors.errorMsg.length() == 0)) { //if no error message so database connection is good
 
             errors = DbMods.send(input, "6", dbc);
 
@@ -73,6 +69,11 @@
             }
 
         }
+        
+
+    }
+    
+    
 
     /* MAKE THE SELECTOR */
     //String roleSelect = MakeSelectTag.makeSelect(dbc, "roleName", roleSQL, input.roleName, "Select Role Name", "user_role_id", "role_name");
@@ -84,8 +85,8 @@
 <jsp:include page="jspIncludes/headToContent.jsp" />
 
 <div class="arduino">
-    <h1>Control Your Arudino</h1>
-    <form action="arduino.jsp" method="post">
+    <h1>Control Your Arduino</h1>
+    <form action="arduino.jsp" method="get">
 
         <div class = "insideArduino">
             <br/>
@@ -99,18 +100,21 @@
 
             Day Length
             <input type = "text" name ="light_interval" value = "<%out.print(input.light_interval);%>"/>
+            <br><span style="font-size: 10px;">(0-24) Ex. 8</span>
             <br/><br/>
             <span class="error"><%out.print(errors.light_interval);%></span>
             <br/>
 
             Mist Interval 
             <input type = "text" name="mist_interval_off" value = "<%out.print(input.mist_interval_off);%>"/>
+            <br><span style="font-size: 10px;">(0-99):(0-59) Ex.2:00</span>
             <br/><br/>
             <span class="error"><%out.print(errors.mist_interval_off);%></span>
             <br/>
 
             Mist Interval Duration
             <input type = "text" name="mist_interval_on" value = "<%out.print(input.mist_interval_on);%>"/>
+            <br><span style="font-size: 10px;">(0-59) Ex.10</span>
             <br/><br/>
             <span class="error"><%out.print(errors.mist_interval_on);%></span>
             <br/>
@@ -121,7 +125,7 @@
 
         </div>
 
-        <input type="submit" value="Send"/>
+        <input type="submit" value="Submit"/>
 
         <strong><%out.print(errors.errorMsg);%></strong>
         <br/>

@@ -17,14 +17,13 @@ public class StringData {
     public String first_name = "";
     public String last_name = "";
     public String phone_number = "";
-    public String salt = "";
+    public String password = "";
     public String role_id = "";
-    public String password_id = "";
     public String system_ip = "";
     public String errorMsg = ""; // this field is used, for example, to hold db error while attempting login.
 
     public int getCharacterCount(){
-        String S = this.userId + this.user_name + this.email + this.first_name + this.last_name + this.phone_number + this.salt + this.role_id + this.password_id + this.system_ip;
+        String S = this.userId + this.user_name + this.email + this.first_name + this.last_name + this.phone_number + this.password + this.role_id + this.system_ip;
         
         return S.length();
     }
@@ -36,9 +35,8 @@ public class StringData {
                 + ", Frist Name:" + this.first_name
                 + ", Last Name:" + this.last_name
                 + ", Phone Number:" + this.phone_number
-                + ", Salt:" + this.salt
+                + ", Password:" + this.password
                 + ", Role Id:" + this.role_id
-                + ", Password Id:" + this.password_id
                 + ", System IP;:" + this.system_ip
                 + ", errorMsg:" + this.errorMsg;
     }

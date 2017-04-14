@@ -20,46 +20,75 @@ import java.util.logging.Logger;
  */
 public class SystemData {
 
-
-    public static int getNumRows(DbConn dbc, String user_id) {
+    public static int getNumRows(DbConn dbc, String user_id, String sql, String systemId) {
         int size = 0;
-        
+
         try {
             PreparedStatement stmt = null;
             ResultSet results = null;
-            
-            String sql = "SELECT system_status_log_hourly_id, air_temp, water_temp, humidity, water_level, light_on_off, date_logged, s.system_id FROM system_status_log_hourly AS sslh, system AS s WHERE sslh.system_id = s.system_id AND s.user_id = ?";
-            
-            stmt = dbc.getConn().prepareStatement(sql);            
-            
+
+            stmt = dbc.getConn().prepareStatement(sql);
+
             // this puts user id into sql statement above
             stmt.setString(1, user_id);
-            
+            stmt.setString(2, systemId);
+
             //execute query
             results = stmt.executeQuery();
-            
-            while(results.next()){
+
+            while (results.next()) {
                 size++;
             }
-            
+
             //close conns
             results.close();
             stmt.close();
-            
+
             return size;
-            
-            
+
+        } catch (SQLException ex) {
+            Logger.getLogger(SystemData.class.getName()).log(Level.SEVERE, null, ex);
+            return 0;
+        }
+    }
+    public static int getNumRows2(DbConn dbc, String user_id, String sql) {
+        int size = 0;
+
+        try {
+            PreparedStatement stmt = null;
+            ResultSet results = null;
+
+            stmt = dbc.getConn().prepareStatement(sql);
+
+            // this puts user id into sql statement above
+            stmt.setString(1, user_id);
+
+            //execute query
+            results = stmt.executeQuery();
+
+            while (results.next()) {
+                size++;
+            }
+
+            //close conns
+            results.close();
+            stmt.close();
+
+            return size;
+
         } catch (SQLException ex) {
             Logger.getLogger(SystemData.class.getName()).log(Level.SEVERE, null, ex);
             return 0;
         }
     }
 
-    public static StringSystemData[] retrieve(DbConn dbc, String user_id) {
+    public static StringSystemData[] retrieve(DbConn dbc, String user_id, String systemId) {
+
+        String temp = "SELECT system_status_log_hourly_id, air_temp, water_temp, humidity, water_level, light_on_off, date_logged, s.system_id FROM system_status_log_hourly AS sslh, system AS s WHERE sslh.system_id = s.system_id AND s.user_id = ? AND s.system_id = ?";
 
         //get number of rows of Database
-        int numRows = getNumRows(dbc, user_id);
-        
+        int numRows = getNumRows(dbc, user_id, temp, systemId);
+
         StringSystemData sysData[] = new StringSystemData[numRows]; // default constructor sets all fields to "" (empty string)          
         int i = 0;
         PreparedStatement stmt = null;
@@ -67,13 +96,14 @@ public class SystemData {
 
         try {
             //String sql = "select customer_id, credit_limit from customer where email_address = ? and pwd = ?";
-            String sql = "SELECT system_status_log_hourly_id, air_temp, water_temp, humidity, water_level, light_on_off, date_logged, s.system_id FROM system_status_log_hourly AS sslh, system AS s WHERE sslh.system_id = s.system_id AND s.user_id = ?";
+            String sql = "SELECT system_status_log_hourly_id, air_temp, water_temp, humidity, water_level, light_on_off, date_logged, s.system_id FROM system_status_log_hourly AS sslh, system AS s WHERE sslh.system_id = s.system_id AND s.user_id = ? and s.system_id = ?";
 
             stmt = dbc.getConn().prepareStatement(sql);
             // System.out.println("*** statement prepared- no sql compile errors");
 
             // this puts user id into sql statement above 
             stmt.setString(1, user_id);
+            stmt.setString(2, systemId);
 
             results = stmt.executeQuery();
 
@@ -105,6 +135,47 @@ public class SystemData {
             return sysData;
         }
 
+    }
+
+    public static String[] getSystems(DbConn dbc, String user_id) {
+        
+        String temp = "SELECT system_id FROM system AS s WHERE s.user_id = ?";
+        
+        String systems[] = new String[getNumRows2(dbc, user_id, temp)]; // default constructor sets all fields to "" (empty string)          
+        int i = 0;
+        PreparedStatement stmt = null;
+        ResultSet results = null;
+
+        try {
+            //String sql = "select customer_id, credit_limit from customer where email_address = ? and pwd = ?";
+            String sql = "SELECT system_id FROM system AS s WHERE s.user_id = ?";
+
+            stmt = dbc.getConn().prepareStatement(sql);
+            // System.out.println("*** statement prepared- no sql compile errors");
+
+            // this puts user id into sql statement above 
+            stmt.setString(1, user_id);
+
+            results = stmt.executeQuery();
+
+            //HAS TO BE A WHILE LOOP TO SUPPORT MULTIPLE ARUINO SYSTEMS
+            while (results.next()) {
+                
+
+                systems[i] = results.getObject("system_id").toString();
+                i++;
+                //System.out.println("*** 5 fields extracted from result set");
+            }
+
+            //close stuff
+            results.close();
+            stmt.close();
+
+            return systems;
+        } catch (Exception e) {
+            systems[0] = "Exception thrown in SystemData.getSystems(): " + e.getMessage();
+            return systems;
+        }
     }
 
 }

@@ -42,26 +42,7 @@ public class ValidationUtils {
         }
     } // dateConversion()
     
-    
-    public static java.sql.Time timeConversion(String val) {
-
-        if ((val == null) || (val.length() == 0)) {
-            return null;
-        }
-        try {
-            //java.text.SimpleDateFormat dateformat = new java.text.SimpleDateFormat("MM/dd/yyyy"); //please notice the capital M
-            //dateformat.setLenient(false);
-            //java.util.Date myDate = dateformat.parse(val);
-            java.util.Time myTime;
-            //return new java.sql.Date(myDate.getTime());
-            //return new java.sql.Time()
-            //return d.toString(); // debugging...
-        } catch (Exception e) {
-            System.out.println("ValidationUtils.dateConversion(): cannot convert " + val + " to date.");
-            return null;
-        }
-    }
-
+   
 
     /* Check string "val" to see if it has a valid BigDecimal in it.
      * Return "" if the input is OK. Otherwise, return error message. */

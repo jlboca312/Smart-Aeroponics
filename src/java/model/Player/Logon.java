@@ -17,11 +17,11 @@ import java.sql.ResultSet;
  */
 public class Logon {
 
-    public static StringData find(DbConn dbc, String user_name, String salt) {
+    public static StringData find(DbConn dbc, String user_name, String password) {
         StringData foundUser = new StringData(); // default constructor sets all fields to "" (empty string) 
         try {
             //String sql = "select customer_id, credit_limit from customer where email_address = ? and pwd = ?";
-            String sql = "select user_id, user_name, email, first_name, last_name, phone_number, salt, role_id, password_id from user where user_name = ? and salt = ?";
+            String sql = "select user_id, user_name, email, first_name, last_name, phone_number, password, role_id from user where user_name = ? and password = ?";
                     
 
             PreparedStatement stmt = dbc.getConn().prepareStatement(sql);
@@ -32,7 +32,7 @@ public class Logon {
             // System.out.println("*** email address substituted into the sql");
 
             // this puts the user's input (from variable userPwd) into the 2nd question mark of the sql statement above. 
-            stmt.setString(2, salt);
+            stmt.setString(2, password);
             // System.out.println("*** pwd substituted into the sql");
             
 
@@ -52,10 +52,8 @@ public class Logon {
                 foundUser.first_name = results.getObject("first_name").toString();
                 foundUser.last_name = results.getObject("last_name").toString();
                 foundUser.phone_number = results.getObject("phone_number").toString();
-                foundUser.salt = results.getObject("salt").toString();
+                foundUser.password = results.getObject("password").toString();
                 foundUser.role_id = results.getObject("role_id").toString();
-                foundUser.password_id = results.getObject("password_id").toString();
-                //foundPlayer.pswd = FormatUtils.formatStringTd(results.getObject("pswd"));
                 
                 //System.out.println("*** 5 fields extracted from result set");
                 return foundUser;

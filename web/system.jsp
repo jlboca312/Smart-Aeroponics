@@ -25,9 +25,20 @@
         /*-webkit-text-stroke-width: 2px;
         -webkit-text-stroke-color: black;*/
     }
-    
+
     .jumbo .container p{
         font-size: 20px;
+    }
+
+    #selectTagWrap{
+        padding: 20px;
+        float: left;
+        /*width: 310px;*/    
+        border-radius: 25px;
+        text-align: center;
+        opacity: 0.84;
+        background-color: #efefef;
+        margin-left:55px;
     }
 
     #airTemp{
@@ -134,16 +145,79 @@
 <jsp:include page="jspIncludes/headToContent.jsp" />
 
 
+<%
+    String msg = ""; //overrall message
+
+    //StringData loggedOnUser = (StringData) session.getAttribute("user"); //gets object/attribute set from logon.jsp
+    StringData loggedOnUser = new StringData();
+    loggedOnUser.userId = "17";
+    String systemId = "6";
+
+    if (loggedOnUser == null) { //meaning user is not logged in
+        try {
+            // Will send user to deny.jsp page if not logged in 
+            response.sendRedirect("deny.jsp?denyMsg=Log on to view your system's diagnostics.");
+            //response.sendRedirect("chart.jsp");
+        } catch (Exception e) {
+            msg += " Exception was thrown: " + e.getMessage();
+        }
+
+    } else { //user is logged in 
+
+        DbConn dbc = new DbConn(); //get database connection    
+
+        if (request.getParameter("system_id") != null) {
+            systemId = request.getParameter("system_id");
+            //session.setAttribute("user", loggedOnUser);
+        }
+
+        //get sytems
+        String systems[] = SystemData.getSystems(dbc, loggedOnUser.userId);
+
+        String selected = "selected = 'selected'";
+        String outt = "\n\n<select name = 'system_id'>\n";
+
+        //puts a pre-selected choice on first rendering of dropdown            
+        outt += "   <option value = '0'>";
+        outt += "Select Your System" + "</option>\n";
+
+        //while there are more rows/records (ex. jedrick, david, john, etc.)
+        for (int o = 0; o < systems.length; o++) {
+
+            outt += "   <option value = '" + systems[o] + "'>";
+            outt += systems[o] + "</option>\n";
+
+        }
+
+        outt += "</select>\n\n";
+%>
+
+
+
+
 <div class="jumbo">
     <div class="container">
         <h1>YOUR <br> SYSTEM</h1>
-        <p><a href="users.jsp">Click Here to Control<br> Your Aeroponics System</a></p>
+        <h4><a href="arduino.jsp">Click Here to Control<br> Your Aeroponics System</a></h4>
 
+    </div>
+
+    <div id="selectTagWrap">
+        <form action="system.jsp" method="get">
+
+
+            <span id="selectTag"><%out.print(outt);%></span>
+            &nbsp;&nbsp;
+
+            <input type="submit" value="View"/>
+        </form>
     </div>
 </div>
 
 <br><br><br>
 
+
+<br><br><br>    <br><br><br>      
 
 <div id="airTemp">
 
@@ -201,6 +275,7 @@
         well controlled area.</p> 
 </div>
 
+-->
 <div id="light">
     <canvas id="lightChart" width="50" height="20" ></canvas>
 </div>
@@ -211,56 +286,40 @@
         shows the status of your light.</p> 
 </div> 
 
--->
 <script>
 
-    <%        String msg = ""; //overrall message
+    <%
 
-        //StringData loggedOnUser = (StringData) session.getAttribute("user"); //gets object/attribute set from logon.jsp
-        StringData loggedOnUser = new StringData();
-        loggedOnUser.userId = "17";
+        //put data from DB into sysData
+        StringSystemData sysData[] = SystemData.retrieve(dbc, loggedOnUser.userId, systemId);
 
-        if (loggedOnUser == null) { //meaning user is not logged in
-            try {
-                // Will send user to deny.jsp page if not logged in 
-                response.sendRedirect("deny.jsp?denyMsg=Log on to view your system's diagnostics.");
-                //response.sendRedirect("chart.jsp");
-            } catch (Exception e) {
-                msg += " Exception was thrown: " + e.getMessage();
-            }
+        //StringSystemData sysData = SystemData.retrieve(dbc, loggedOnUser.userId);
 
-        } else { //user is logged in 
+        /* MAKE THE SELECTOR */
+        //String roleSelect = MakeSelectTag.makeSelect(dbc, "roleName", roleSQL, input.roleName, "Select Role Name", "user_role_id", "role_name");
+        //initialize separate arrays for each sensor
+        int sslh_id[] = new int[sysData.length];
+        float air_temp[] = new float[sysData.length],
+                water_temp[] = new float[sysData.length],
+                humidity[] = new float[sysData.length];
+        int water_level[] = new int[sysData.length];
+        boolean light_on_off[] = new boolean[sysData.length];
+        String date_logged[] = new String[sysData.length];
+        int system_id[] = new int[sysData.length];
 
-            DbConn dbc = new DbConn(); //get database connection    
-
-            //put data from DB into sysData
-            StringSystemData sysData[] = SystemData.retrieve(dbc, loggedOnUser.userId);
-            //StringSystemData sysData = SystemData.retrieve(dbc, loggedOnUser.userId);
-
-            //initialize separate arrays for each sensor
-            int sslh_id[] = new int[sysData.length];
-            float air_temp[] = new float[sysData.length],
-                    water_temp[] = new float[sysData.length],
-                    humidity[] = new float[sysData.length];
-            int water_level[] = new int[sysData.length];
-            boolean light_on_off[] = new boolean[sysData.length];
-            String date_logged[] = new String[sysData.length];
-            int system_id[] = new int[sysData.length];
-
-            //fill initialized  arrays with the data from DB
-            int counter;
-            for (counter = 0; counter < sysData.length; counter++) {
-                sslh_id[counter] = Integer.parseInt(sysData[counter].system_status_log_hourly_id);
-                air_temp[counter] = Float.parseFloat(sysData[counter].air_temp);
-                water_temp[counter] = Float.parseFloat(sysData[counter].water_temp);
-                humidity[counter] = Float.parseFloat(sysData[counter].humidity);
-                water_level[counter] = Integer.parseInt(sysData[counter].water_level);
-                light_on_off[counter] = Boolean.parseBoolean(sysData[counter].light_on_off);
-                date_logged[counter] = sysData[counter].date_logged;
-                system_id[counter] = Integer.parseInt(sysData[counter].system_id);
-            }
-            counter = 0;
-        
+        //fill initialized  arrays with the data from DB
+        int counter;
+        for (counter = 0; counter < sysData.length; counter++) {
+            sslh_id[counter] = Integer.parseInt(sysData[counter].system_status_log_hourly_id);
+            air_temp[counter] = Float.parseFloat(sysData[counter].air_temp);
+            water_temp[counter] = Float.parseFloat(sysData[counter].water_temp);
+            humidity[counter] = Float.parseFloat(sysData[counter].humidity);
+            water_level[counter] = Integer.parseInt(sysData[counter].water_level);
+            light_on_off[counter] = Boolean.parseBoolean(sysData[counter].light_on_off);
+            date_logged[counter] = sysData[counter].date_logged;
+            system_id[counter] = Integer.parseInt(sysData[counter].system_id);
+        }
+        counter = 0;
 
     %>
 
@@ -273,6 +332,8 @@
     var dbAirTempData = [];
     var dbWaterTempData = [];
     var dbHumidityData = [];
+    var dbWaterLevelData = [];
+    var dbLightData = false;
 
     //PUTS JAVA ARRAY INTO JAVASCRIPT ARRAY
 
@@ -290,6 +351,12 @@
     <%for (int jk = 0; jk < sysData.length; jk++) {%>
     dbHumidityData.push("<%=humidity[jk]%>");
     <%}%>
+
+    //for light data
+    <%for (int jk = 0; jk < sysData.length; jk++) {%>
+    dbLightData = ("<%=light_on_off[jk]%>");
+    <%}%>
+
 
     //alert("air_temp: " + dbAirTempData);
 
@@ -424,8 +491,8 @@
 
     //WATER LEVEL
 
-
-    /*    var floatSensorHighMapped = [], floatSensorMedMapped = [], floatSensorLowMapped = [], noWater = [];
+    /*
+     var floatSensorHighMapped = [], floatSensorMedMapped = [], floatSensorLowMapped = [], noWater = [];
      i = 0;
      
      for (i; i < hoursCollected; i++) {
@@ -507,31 +574,43 @@
      }
      
      });
-     
-     var lightData = {
-     labels: ["On", "Off"],
-     datasets: [{
-     label: 'Light Bulb',
-     data: [1, 1],
-     backgroundColor: ["rgba(50, 242, 111, 0.75)", "rgba(244, 48, 48, 0.75)"]
-     }]
-     
-     };
-     
-     var ctx5 = document.getElementById('lightChart').getContext('2d');
-     var lightChart = new Chart(ctx5, {
-     type: 'doughnut',
-     data: lightData
-     
-     });
-     
-     
-   
      */
+    var lightData = [1];
+    var backgroundColour = ["rgba(244, 48, 48, 0.75)"];
+    var labelz = ["Off"];
 
 
-     //FOR CLOSING THE ELSE STATEMENT -- MEANING USER IS LOGGED IN
-     <% }%>
+    if (dbLightData) {
+        backgroundColour = ["rgba(50, 242, 111, 0.75)"];
+        labelz = ["On"];
+    }
+
+
+    var lightData = {
+        labels: labelz,
+        datasets: [{
+                label: 'Light Bulb',
+                data: lightData,
+                backgroundColor: backgroundColour
+            }]
+
+    };
+
+    var ctx5 = document.getElementById('lightChart').getContext('2d');
+    var lightChart = new Chart(ctx5, {
+        type: 'doughnut',
+        data: lightData
+
+    });
+
+
+
+
+
+
+    //FOR CLOSING THE ELSE STATEMENT -- MEANING USER IS LOGGED IN
+    <%
+        }%>
 
 </script>
 

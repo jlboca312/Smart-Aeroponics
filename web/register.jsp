@@ -54,8 +54,7 @@
         input.first_name = request.getParameter("first_name");
         input.last_name = request.getParameter("last_name");
         input.phone_number = request.getParameter("phone_number");
-        input.salt = request.getParameter("salt");
-        input.password_id = request.getParameter("password_id");
+        input.password = request.getParameter("password");
         input.system_ip = request.getParameter("system_ip");
 
         errors.errorMsg = dbc.getErr();
@@ -122,16 +121,10 @@
             <span class="error"><%out.print(errors.phone_number);%></span>
             <br/>
             
-            Salt
-            <input type = "text" name="salt" value = "<%out.print(input.salt);%>"/>
+            Password
+            <input type = "text" name="Password" value = "<%out.print(input.password);%>"/>
             <br/><br/>
-            <span class="error"><%out.print(errors.salt);%></span>
-            <br/>
-            
-            Password ID
-            <input type = "text" name="password_id" value = "<%out.print(input.password_id);%>"/>
-            <br/><br/>
-            <span class="error"><%out.print(errors.password_id);%></span>
+            <span class="error"><%out.print(errors.password);%></span>
             <br/>
             
             System IP
@@ -160,3 +153,5 @@
 
 
 <jsp:include page="jspIncludes/postContent.jsp"/>
+
+

@@ -70,8 +70,11 @@
 
         if (connErrorMsg.length() == 0) { // no error message so database connection OK
             StringData loggedOnUser = Logon.find(dbc, strUserName, strPassword);
-
+            
+           
+            
             if (loggedOnUser != null) {
+                loggedOnUser.system_ip = Logon.findFirstSystem(dbc, loggedOnUser.userId);         
                 session.setAttribute("user", loggedOnUser);
                 success = true;
                 

@@ -4,9 +4,11 @@ package view;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+
 // classes in my project
 import dbUtils.*;
 import java.math.BigDecimal;
+import model.Player.StringData;
 
 public class WebUserView {
 
@@ -15,7 +17,7 @@ public class WebUserView {
      *   (This style should be defined in the JSP page (header or style sheet referenced by the page).
      * dbc: an open database connection.
      */
-    public static String listAllUser(String cssTableClass, DbConn dbc) {
+    public static String listAllUser(String cssTableClass, DbConn dbc, String systemId) {
 
         // String type could have been used, but StringBuilder is more efficient 
         // in this case where we are just appending
@@ -31,10 +33,12 @@ public class WebUserView {
                     + "where P.user_role_id = U.user_role_id order by player_id, player_name";*/
             
             //sql string to display just id, name, email and pswd
-            String sql = "select player_id, player_name, email_address, pswd, from Player as P, User_role as U "
-                    + "where P.user_role_id = U.user_role_id order by player_id, player_name";
+            String sql = "SELECT date, log_info, system_id FROM system_command_log AS scl WHERE scl.system_id = ?";
             
             stmt = dbc.getConn().prepareStatement(sql);
+            
+            stmt.setString(1, systemId);
+            
             results = stmt.executeQuery();
             //sb.append("executed the query " + "<br/><br/>");
 
@@ -42,18 +46,16 @@ public class WebUserView {
             sb.append(cssTableClass);
             sb.append("'>");
             sb.append("<tr>");
-            sb.append("<th style='text-align:right'>User ID</th>");
-            sb.append("<th style='text-align:center'>User Name</th>");
-            sb.append("<th style='text-align:center'>Email Address</th>");
-            sb.append("<th style='text-align:center'>Password</th>");
+            sb.append("<th style='text-align:right'>Date Logged</th>");
+            sb.append("<th style='text-align:center'>Log Info</th>");
+            sb.append("<th style='text-align:center'>System ID</th>");
             //sb.append("<th style='text-align:right'>Skill Level</th></th>");
             //sb.append("<th style='text-align:center'>Role Name</th></tr>");
             while (results.next()) {
                 sb.append("<tr>");
-                sb.append(FormatUtils.formatIntegerTd(results.getObject("player_id")));
-                sb.append(FormatUtils.formatStringTd(results.getObject("player_name")));
-                sb.append(FormatUtils.formatStringTd(results.getObject("email_address")));
-                sb.append(FormatUtils.formatStringTd(results.getObject("pswd")));
+                sb.append(FormatUtils.formatDateTd(results.getObject("date")));
+                sb.append(FormatUtils.formatStringTd(results.getObject("log_info")));
+                sb.append(FormatUtils.formatIntegerTd(results.getObject("system_id")));
                // sb.append(FormatUtils.formatDecimalTd(results.getObject("skill_level")));
                 //sb.append(FormatUtils.formatStringTd(results.getObject("role_name")));
                 sb.append("</tr>\n");

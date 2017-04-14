@@ -58,6 +58,8 @@ public class Logon {
                 foundUser.password = results.getObject("password").toString();
                 foundUser.role_id = results.getObject("role_id").toString();
 
+                System.out.println(foundUser.toString());
+
                 return foundUser;
                 //throw new Exception("FUCK");
             } else {
@@ -70,9 +72,8 @@ public class Logon {
         }
 
     }
-    
-    public static String findFirstSystem(DbConn dbc, String user_id) throws Exception {
 
+    public static String findFirstSystem(DbConn dbc, String user_id) {
         try {
             //String sql = "select customer_id, credit_limit from customer where email_address = ? and pwd = ?";
             String sql = "SELECT system_id FROM system AS s WHERE s.user_id = ? LIMIT 1";
@@ -89,10 +90,10 @@ public class Logon {
             // since the email address is required (in database) to be unique, we don't need a while loop like we did 
             // for the display data lab. An "if" statement is better for this purpose.
             if (results.next()) {
+                
                 //System.out.println("*** record selected");
-                //foundPlayer.playerId = (int) results.getObject("player_id");
-                throw new Exception(results.getObject("system_ip").toString());
-                //return results.getObject("system_ip").toString();
+                System.out.println(results.getObject("system_id").toString());
+                return results.getObject("system_id").toString();
                 //throw new Exception("FUCK");
             } else {
                 return null; // means player not found with given credentials.

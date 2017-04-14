@@ -53,6 +53,7 @@
     String msg = ""; // this is an overall messsage (beyond field level validation)
     boolean success = false; //variable to state whether log on was successful or not
 
+    
     if (request.getParameter("user_name") != null) {
         strUserName = request.getParameter("user_name"); //extract user input from URL
         if (strUserName.length() == 0) {
@@ -70,10 +71,10 @@
         if (connErrorMsg.length() == 0) { // no error message so database connection OK
             StringData loggedOnUser = Logon.find(dbc, strUserName, strPassword);
 
-            
             if (loggedOnUser != null) {
                 session.setAttribute("user", loggedOnUser);
                 success = true;
+                
             }
 
             if (success && (loggedOnUser.user_name.length() > 0)) {
@@ -82,7 +83,9 @@
                 welcomeMsg = "Log In Failed. Username and Password invalid.";
             }
         }
+        
     }
+    
 
 %>
 

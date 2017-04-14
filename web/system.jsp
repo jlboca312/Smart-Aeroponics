@@ -38,7 +38,6 @@
         text-align: center;
         opacity: 0.84;
         background-color: #efefef;
-        margin-left:55px;
     }
 
     #airTemp{
@@ -148,10 +147,10 @@
 <%
     String msg = ""; //overrall message
 
-    //StringData loggedOnUser = (StringData) session.getAttribute("user"); //gets object/attribute set from logon.jsp
-    StringData loggedOnUser = new StringData();
-    loggedOnUser.userId = "17";
-    String systemId = "6";
+    StringData loggedOnUser = (StringData) session.getAttribute("user"); //gets object/attribute set from logon.jsp
+    //StringData loggedOnUser = new StringData();
+    //loggedOnUser.userId = "17";
+    //String systemId = "6";
 
     if (loggedOnUser == null) { //meaning user is not logged in
         try {
@@ -167,7 +166,7 @@
         DbConn dbc = new DbConn(); //get database connection    
 
         if (request.getParameter("system_id") != null) {
-            systemId = request.getParameter("system_id");
+            loggedOnUser.system_ip = request.getParameter("system_id");
             //session.setAttribute("user", loggedOnUser);
         }
 
@@ -198,26 +197,31 @@
 <div class="jumbo">
     <div class="container">
         <h1>YOUR <br> SYSTEM</h1>
-        <h4><a href="arduino.jsp">Click Here to Control<br> Your Aeroponics System</a></h4>
+        <h4><a href="arduino.jsp?system_id=<%out.print(loggedOnUser.system_ip);%>">Click Here to Control<br> Your Aeroponics System</a></h4>
+        <h4><a href="addSystem.jsp">Or Add a New System</a></h4>
+
+        <div id="selectTagWrap">
+            <form action="system.jsp" method="get">
+
+
+                <span id="selectTag"><%out.print(outt);%></span>
+                &nbsp;&nbsp;
+
+                <input type="submit" value="View"/>
+            </form>
+        </div>
 
     </div>
 
-    <div id="selectTagWrap">
-        <form action="system.jsp" method="get">
 
 
-            <span id="selectTag"><%out.print(outt);%></span>
-            &nbsp;&nbsp;
 
-            <input type="submit" value="View"/>
-        </form>
-    </div>
 </div>
 
-<br><br><br>
 
 
-<br><br><br>    <br><br><br>      
+
+<br><br><br>   
 
 <div id="airTemp">
 
@@ -291,7 +295,7 @@
     <%
 
         //put data from DB into sysData
-        StringSystemData sysData[] = SystemData.retrieve(dbc, loggedOnUser.userId, systemId);
+        StringSystemData sysData[] = SystemData.retrieve(dbc, loggedOnUser.userId, loggedOnUser.system_ip);
 
         //StringSystemData sysData = SystemData.retrieve(dbc, loggedOnUser.userId);
 
@@ -609,7 +613,7 @@
 
 
     //FOR CLOSING THE ELSE STATEMENT -- MEANING USER IS LOGGED IN
-    <%
+    <% 
         }%>
 
 </script>

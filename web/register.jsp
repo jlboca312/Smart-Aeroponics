@@ -122,7 +122,7 @@
             <br/>
             
             Password
-            <input type = "text" name="Password" value = "<%out.print(input.password);%>"/>
+            <input type = "text" name="password" value = "<%out.print(input.password);%>"/>
             <br/><br/>
             <span class="error"><%out.print(errors.password);%></span>
             <br/>

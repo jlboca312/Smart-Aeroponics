@@ -2,6 +2,10 @@ package dbUtils;
 
 import java.sql.DriverManager;
 import java.sql.Connection;
+import java.security.Key;
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+
 
 /** Wrapper class for database connection.  
  *  Constructor opens connection.  Close method closes connection.  */
@@ -97,4 +101,6 @@ public class DbConn {
         }
         return temple;
     }
+    
+    
 } // class

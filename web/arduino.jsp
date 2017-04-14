@@ -40,11 +40,15 @@
 </style>
 
 <%
-    
+
     DbConn dbc = new DbConn(); //get database connection
     StringArduinoData input = new StringArduinoData();
     StringArduinoData errors = new StringArduinoData();
 
+    if (request.getParameter("system_id") != null) {
+        input.system_id = request.getParameter("system_id");
+
+    }
 //variable for role_name select tag
     //String roleSQL = "SELECT user_role_id, role_name FROM User_role ORDER BY role_name";
     if (request.getParameter("light_interval_start") != null) {
@@ -59,27 +63,27 @@
         /*if (input.roleName.equals("0")) {
             selectorErr = "Must Select a Role Name";
         }*/
-        
         if ((errors.errorMsg.length() == 0)) { //if no error message so database connection is good
 
-            errors = DbMods.send(input, "6", dbc);
+            errors = DbMods.send(input, input.system_id, dbc);
 
             if (errors.errorMsg.length() == 0) { //insert method returned empty string so SUCCESS!!
                 errors.errorMsg = "Data Sent Successfully!";
             }
 
         }
-        
 
     }
-    
-    
 
     /* MAKE THE SELECTOR */
     //String roleSelect = MakeSelectTag.makeSelect(dbc, "roleName", roleSQL, input.roleName, "Select Role Name", "user_role_id", "role_name");
     dbc.close(); //close db connection
 
-    
+    /*
+    if (request.getParameter("light_interval_start") != null) {
+        throw new Exception(input.system_id);
+    }
+     */
 %>
 
 <jsp:include page="jspIncludes/headToContent.jsp" />
@@ -114,12 +118,12 @@
 
             Mist Interval Duration
             <input type = "text" name="mist_interval_on" value = "<%out.print(input.mist_interval_on);%>"/>
-            <br><span style="font-size: 10px;">(0-59) Ex.10</span>
+            <br><span style="font-size: 10px;">(0-59) Ex.16:30</span>
             <br/><br/>
             <span class="error"><%out.print(errors.mist_interval_on);%></span>
-            <br/>
+            <br/> 
 
-
+            <input type = "hidden" name="system_id" value = "<%out.print(input.system_id);%>"/>
 
             <br/><br/>
 

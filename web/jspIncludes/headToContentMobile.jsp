@@ -16,9 +16,9 @@
         String logonLink = "";
         String msg = ""; //overrall message
 
-        StringData loggedOnPlayer = (StringData) session.getAttribute("player"); //gets object/attribute set from logon.jsp
+        StringData loggedOnUser = (StringData) session.getAttribute("user"); //gets object/attribute set from logon.jsp
 
-        if (loggedOnPlayer == null) { //meaning user is not logged in
+        if (loggedOnUser == null) { //meaning user is not logged in
             try {
                 msg = "";
                 logonLink = "<span id=\"logg\"><a href ='logonMobile.jsp'>LOG ON</a></span>"; //show a Log On link if no user is logged in
@@ -28,8 +28,8 @@
 
         } else { //meaning user is logged in
             try {
-                msg = "Welcome " + loggedOnPlayer.playerName + "!";
-                logonLink = "<a href = 'logoff.jsp'>Log Off</a>"; //show log of link if user is logged in, brings them to logoff.jsp
+                msg = "Welcome " + loggedOnUser.user_name + "!";
+                logonLink = "<span id=\"logg\"><a href = 'logoff.jsp'>Log Off</a></span>"; //show log of link if user is logged in, brings them to logoff.jsp
             } catch (Exception e) {
                 msg += " Exception was thrown: " + e.getMessage();
             }
@@ -164,7 +164,7 @@
             <div class="menu">
                 <ul>
                     <a href="indexMobile.jsp"><li>HOME</li></a>   
-                    <a href="systemMobile.jsp"><li>SYSTEM DIAGNOSTICS</li></a> 
+                    <a href="systemMobile.jsp?system_id=<%if(loggedOnUser != null){ out.print(loggedOnUser.system_ip);}%>"><li>SYSTEM DIAGNOSTICS</li></a> 
                     <a href="aboutMobile.jsp"><li>ABOUT</li></a>
                     <a href="contactMobile.jsp"><li>CONTACT US</li></a> 
                 </ul>

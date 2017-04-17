@@ -111,7 +111,7 @@
             <br/><br/>
         </div>
 
-        <input type="submit" value="Submit"/>
+        <input type="submit" value="Log On"/>
         
         <div id="RegisterMsg">
             <br/>

@@ -199,7 +199,7 @@
         <h1>YOUR <br> SYSTEM</h1>
         <h4><a href="arduino.jsp?system_id=<%out.print(loggedOnUser.system_ip);%>">Click Here to Control<br> Your Aeroponics System</a></h4>
         <h4><a href="addSystem.jsp">Or Add a New System</a></h4>
-        <br>
+        
         <h5><a href="systemLog.jsp?system_id=<%out.print(loggedOnUser.system_ip);%>">View System Log</a></h5>
 
         <div id="selectTagWrap">

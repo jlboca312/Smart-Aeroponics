@@ -56,9 +56,7 @@
 </style>
 
 
-
 <jsp:include page="jspIncludes/headToContentMobile.jsp" />
-
 
 
 

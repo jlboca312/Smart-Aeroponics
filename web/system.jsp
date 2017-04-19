@@ -14,7 +14,7 @@
     .jumbo{
         position: relative;
         margin-top: 75px;
-        margin-left: 10px;
+        margin-right: 60px;
     }
 
     .jumbo h1 {

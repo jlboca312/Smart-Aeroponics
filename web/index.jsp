@@ -19,6 +19,8 @@
         background-repeat: no-repeat;
         background-size: cover;
         background-attachment: fixed;
+        margin-top: 50px;
+        margin-right: 60px;
 
     }
 
@@ -91,7 +93,7 @@
 <div class="jumbo">
     <div class="container">
         <h1>SMART<br/>AEROPONICS</h1>
-        <p>The modern way to grow your<br/> plants remotely and without the mess of soil.<p>
+        <p>The modern way to grow your<br/> plants remotely without the mess of soil.<p>
 
 
     </div>

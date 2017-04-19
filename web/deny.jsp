@@ -17,7 +17,7 @@
         margin: auto;
         margin-top: 100px;
         border-radius: 25px;
-        padding-top: 1px;
+        padding-top: 13px;
         padding-bottom: 10px;
         opacity: 0.84;
     }

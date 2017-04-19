@@ -166,10 +166,10 @@
 <%
     String msg = ""; //overrall message
 
-    //StringData loggedOnUser = (StringData) session.getAttribute("user"); //gets object/attribute set from logon.jsp
-    StringData loggedOnUser = new StringData();
-    loggedOnUser.userId = "17";
-    String systemId = "6";
+    StringData loggedOnUser = (StringData) session.getAttribute("user"); //gets object/attribute set from logon.jsp
+    //StringData loggedOnUser = new StringData();
+    //loggedOnUser.userId = "17";
+    //String systemId = "6";
 
     if (loggedOnUser == null) { //meaning user is not logged in
         try {

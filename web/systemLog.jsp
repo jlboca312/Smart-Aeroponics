@@ -80,7 +80,7 @@
 
 <div id = "SystemTable">
 
-    <h2>System Log</h2>
+    <h2 style="color:black;">System Log</h2>
     <br/>
 
     <% out.print(msg);%>

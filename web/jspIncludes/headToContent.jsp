@@ -8,6 +8,7 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>
 
+
     <%@page language="java" import="model.Player.StringData" %>
     <%@page language="java" import="model.Player.Logon" %>
     <%@page language="java" import="dbUtils.DbConn" %>
@@ -55,7 +56,9 @@
 
             <div id="navBar">
                 <a href="index.jsp">HOME</a>  &nbsp;&nbsp; | &nbsp;&nbsp;  
-                <a href="system.jsp?system_id=<%if(loggedOnUser != null){ out.print(loggedOnUser.system_ip);}%>">SYSTEM DIAGNOSTICS</a> &nbsp;&nbsp; | &nbsp;&nbsp;
+                <a href="system.jsp?system_id=<%if (loggedOnUser != null) {
+                        out.print(loggedOnUser.system_ip);
+                    }%>">SYSTEM DIAGNOSTICS</a> &nbsp;&nbsp; | &nbsp;&nbsp;
                 <a href="about.jsp">ABOUT</a> &nbsp;&nbsp; | &nbsp;&nbsp;
                 <a href="contact.jsp">CONTACT US</a> 
 

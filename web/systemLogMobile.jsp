@@ -76,7 +76,7 @@
     dbc.close(); //    EVERY code path that opens a db connection, must also close it.
 %>
 
-<jsp:include page="jspIncludes/headToContent.jsp" />
+<jsp:include page="jspIncludes/headToContentMobile.jsp" />
 
 <div id = "SystemTable">
 

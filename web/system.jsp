@@ -13,7 +13,8 @@
 <style>
     .jumbo{
         position: relative;
-        margin-top: 50px;
+        margin-top: 75px;
+        margin-left: 10px;
     }
 
     .jumbo h1 {
@@ -30,6 +31,15 @@
         font-size: 20px;
     }
 
+    .jumbo .container h4{
+        font-size: 17px;
+    }
+
+    .jumbo .container h5{
+        font-size: 13px;
+    }
+
+
     #selectTagWrap{
         padding: 20px;
         float: left;
@@ -43,98 +53,107 @@
     #airTemp{
         width: 550px;
         height: 450px; 
-        float: left;
-        margin-left:120px;
-        margin-top:15px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+
     }
 
     #airTempInfo{
         padding: 20px;
-        margin-right:200px;
-        float:right;
         width: 310px;    
         border-radius: 25px;
         text-align: center;
         font-size:16px;
         opacity: 0.84;
         background-color: #efefef;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
     }
 
     #waterTemp{
         width: 550px;
         height: 450px; 
-        float: right;
-        margin-right:120px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
     }
 
     #waterTempInfo{
         padding: 20px;
-        margin-left:200px;
-        float:left;
         width: 350px;    
         border-radius: 25px;
         text-align: center;
         font-size:16px;
         opacity: 0.84;
         background-color: #efefef;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
     }
 
     #humidity{
         width: 550px;
         height: 450px; 
-        float: left;
-        margin-left:120px;
-        margin-top:15px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
     }
 
     #humidityInfo{
         padding: 20px;
-        margin-right:200px;
-        float:right;
         width: 310px;    
         border-radius: 25px;
         text-align: center;
         font-size:16px;
         opacity: 0.84;
         background-color: #efefef;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
     }
 
     #water{     
         width: 550px;
         height: 450px; 
-        float: right;
-        margin-right:120px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
     }
 
     #waterInfo{
         padding: 20px;
-        margin-left:200px;
-        float:left;
         width: 300px;    
         border-radius: 25px;
         text-align: center;
         font-size:16px;
         opacity: 0.84;
         background-color: #efefef;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
     }
 
     #light{     
         width: 550px;
         height: 450px; 
-        float: left;
-        margin-left:120px;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
     }
 
     #lightInfo{
         padding: 20px;
-        margin-right:200px;
-        float:right;
         width: 300px;    
         border-radius: 25px;
         text-align: center;
         font-size:16px;
         opacity: 0.84;
         background-color: #efefef;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
     }
 
 </style>
@@ -147,10 +166,10 @@
 <%
     String msg = ""; //overrall message
 
-    StringData loggedOnUser = (StringData) session.getAttribute("user"); //gets object/attribute set from logon.jsp
-    //StringData loggedOnUser = new StringData();
-    //loggedOnUser.userId = "17";
-    //String systemId = "6";
+    //StringData loggedOnUser = (StringData) session.getAttribute("user"); //gets object/attribute set from logon.jsp
+    StringData loggedOnUser = new StringData();
+    loggedOnUser.userId = "17";
+    String systemId = "6";
 
     if (loggedOnUser == null) { //meaning user is not logged in
         try {
@@ -199,7 +218,7 @@
         <h1>YOUR <br> SYSTEM</h1>
         <h4><a href="arduino.jsp?system_id=<%out.print(loggedOnUser.system_ip);%>">Click Here to Control<br> Your Aeroponics System</a></h4>
         <h4><a href="addSystem.jsp">Or Add a New System</a></h4>
-        
+
         <h5><a href="systemLog.jsp?system_id=<%out.print(loggedOnUser.system_ip);%>">View System Log</a></h5>
 
         <div id="selectTagWrap">
@@ -223,74 +242,101 @@
 
 
 
-<br><br><br>   
+<br><br><br>   <br><br><br>   
 
-<div id="airTemp">
+<div class="container">
 
-    <canvas id="airTempChart" width="50" height="20" ></canvas>
+    <div class="row">
+
+        <div class="col-6">
+            <div id="airTemp">
+                <canvas id="airTempChart" width="50" height="20" ></canvas>
+            </div>
+
+        </div>
+        <div class="col-6">
+            <div id="airTempInfo">
+                <h1>Air Temperature</h1>
+                <p>This chart displays the past seven days of air temperature collection
+                    for your aeroponics system. You can observe all information about the data 
+                    from the chart. Ideally, you want your plant's air temperature to be 69 degrees. </p> 
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-6">
+            <div id="waterTempInfo">
+                <h1>Water Temperature</h1>
+                <p>Here, you can see the past seven days of water temperature collection. To
+                    best simulate plants growing in nature, you want you water to be that of rain water,
+                    which is 45 degrees.</p> 
+            </div>
+        </div>
+
+        <div class="col-6">
+            <div id="waterTemp">
+                <canvas id="waterTempChart" width="50" height="20" ></canvas>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+
+        <div class="col-6">
+
+            <div id="humidity">
+                <canvas id="humidityChart" width="50" height="20" ></canvas>
+            </div>
+
+        </div>
+
+        <div class="col-6">
+            <div id="humidityInfo">
+                <h1>Humidity</h1>
+                <p>The humidity of your aeroponics system is also collected every seven days and displayed here. 
+                    Since your system is regularly sprayed with nutrient rich water, the humidity is going to be generally high...
+                    unless you're growing cacti!</p> 
+            </div>
+
+        </div>
+    </div>
+    <!--
+    <div id="water">
+        <canvas id="waterChart" width="50" height="20" ></canvas>
+    </div>
+    
+    <div id="waterInfo">
+        <h1>Water Level</h1>
+        <p>The water temperature is normally reflective of the air temperature in the system. 
+            The best way to control the water and air temperature is to keep your system in a 
+            well controlled area.</p> 
+    </div>
+    
+    -->
+
+    <div class="row">
+
+        <div class="col-6">
+            <div id="lightInfo">
+                <h1>Light </h1>
+                <p>Here you can control whether your system light is on or off. This chart simply
+                    shows the status of your light.</p> 
+            </div> 
+        </div>
+
+        <div class="col-6">
+            <div id="light">
+                <canvas id="lightChart" width="50" height="20" ></canvas>
+            </div>
+        </div>
+
+    </div>
 
 
 </div>
-
-<div id="airTempInfo">
-    <h1>Air Temperature</h1>
-    <p>This chart displays the past seven days of air temperature collection
-        for your aeroponics system. You can observe all information about the data 
-        from the chart. Ideally, you want your plant's air temperature to be 69 degrees. </p> 
-</div>
-
-
-<div id="waterTemp">
-
-    <canvas id="waterTempChart" width="50" height="20" ></canvas>
-
-
-</div>
-
-<div id="waterTempInfo">
-    <h1>Water Temperature</h1>
-    <p>Here, you can see the past seven days of water temperature collection. To
-        best simulate plants growing in nature, you want you water to be that of rain water,
-        which is 45 degrees.</p> 
-</div>
-
-
-<div id="humidity">
-
-    <canvas id="humidityChart" width="50" height="20" ></canvas>
-
-
-</div>
-
-<div id="humidityInfo">
-    <h1>Humidity</h1>
-    <p>The humidity of your aeroponics system is also collected every seven days and displayed here. 
-        Since your system is regularly sprayed with nutrient rich water, the humidity is going to be generally high...
-        unless you're growing cacti!</p> 
-</div>
-
-<!--
-<div id="water">
-    <canvas id="waterChart" width="50" height="20" ></canvas>
-</div>
-
-<div id="waterInfo">
-    <h1>Water Level</h1>
-    <p>The water temperature is normally reflective of the air temperature in the system. 
-        The best way to control the water and air temperature is to keep your system in a 
-        well controlled area.</p> 
-</div>
-
--->
-<div id="light">
-    <canvas id="lightChart" width="50" height="20" ></canvas>
-</div>
-
-<div id="lightInfo">
-    <h1>Light </h1>
-    <p>Here you can control whether your system light is on or off. This chart simply
-        shows the status of your light.</p> 
-</div> 
 
 <script>
 
@@ -615,7 +661,7 @@
 
 
     //FOR CLOSING THE ELSE STATEMENT -- MEANING USER IS LOGGED IN
-    <% 
+    <%
         }%>
 
 </script>

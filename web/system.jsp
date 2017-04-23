@@ -1,4 +1,7 @@
 
+<%@page import="java.util.Arrays"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.io.File"%>
 <%@page import="model.Player.StringSystemData"%>
 <%@page import="model.Player.SystemData"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -155,6 +158,21 @@
         margin-right: auto;
         display: block;
     }
+    
+    #picContainer{
+        padding-top: 20px;
+        width: 500px;
+        height: 600px;
+        border-radius: 25px;
+        text-align: center;
+        font-size:16px;
+        opacity: 0.84;
+        background-color: #efefef;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+    
 
 </style>
 
@@ -208,6 +226,22 @@
         }
 
         outt += "</select>\n\n";
+
+        /*(String picOut = "\n\n<select name = 'pics'>\n";
+
+        //puts a pre-selected choice on first rendering of dropdown            
+        picOut += "   <option value = '0'>";
+        picOut += "Select Your Pic" + "</option>\n";
+
+        //while there are more rows/records (ex. jedrick, david, john, etc.)
+        for (int o = 0; o < systems.length; o++) {
+
+            picOut += "   <option value = '" + systems[o] + "'>";
+            picOut += systems[o] + "</option>\n";
+
+        }
+
+        picOut += "</select>\n\n";*/
 %>
 
 
@@ -221,16 +255,17 @@
 
         <h5><a href="systemLog.jsp?system_id=<%out.print(loggedOnUser.system_ip);%>">View System Log</a></h5>
 
-        <div id="selectTagWrap">
-            <form action="system.jsp" method="get">
+        <br>
+
+        <form action="system.jsp" method="get">
 
 
-                <span id="selectTag"><%out.print(outt);%></span>
-                &nbsp;&nbsp;
+            <span id="selectTag"><%out.print(outt);%></span>
+            &nbsp;&nbsp;
 
-                <input type="submit" value="View"/>
-            </form>
-        </div>
+            <input type="submit" value="View"/>
+        </form>
+
 
     </div>
 
@@ -335,6 +370,17 @@
 
     </div>
 
+    <div class="row">
+        <div class="col-12">
+            <div id="picContainer">
+                <h1>Current Image of System</h1>
+                <br>
+                <img src="#" alt="System Pic" height="460" width="380">
+            </div>
+        </div>
+    </div>
+
+    <br><br>
 
 </div>
 

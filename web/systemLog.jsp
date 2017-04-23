@@ -48,7 +48,7 @@
 
     #SystemTable{
         height: 590px; /*allows for the footer to be at bottom of page*/
-        margin: auto;
+        margin: 0 auto;
     }
 
 

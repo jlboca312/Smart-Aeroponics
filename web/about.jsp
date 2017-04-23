@@ -62,8 +62,8 @@
     .imageContainer{
         background-color: gray;
         float: right;
-        height: 77%;
-        width: 25%;
+        height: 420px;
+        width: 320px;
         margin-right: 125px;
         opacity:1;
     }
@@ -95,7 +95,7 @@
     </div>
 
     <div class="imageContainer">
-        <h1>put image here</h1>
+        <img src="images/bucket.png" alt="Bucket" height="420" width="320">
     </div>
 
 </div>

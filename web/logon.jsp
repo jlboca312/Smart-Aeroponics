@@ -78,6 +78,8 @@
                 session.setAttribute("user", loggedOnUser);
                 success = true;
                 
+                response.sendRedirect("system.jsp?system_id=" + loggedOnUser.system_ip);
+                
             }
 
             if (success && (loggedOnUser.user_name.length() > 0)) {

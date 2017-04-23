@@ -177,7 +177,7 @@ public class DbMods {
             PrepStatement stmt2 = new PrepStatement(dbc, sql2);
 
             /* FILL IN THOSE QUESTION MARKS */
-            stmt2.setString(1, "Updated the fucking shit.");
+            stmt2.setString(1, "Set artificial sunrise to " + input.light_interval_start + ", light interval to " + input.light_interval + " hours, mist interval to " +input.mist_interval_off+ " minutes, mist duration to " +input.mist_interval_on + " seconds.");
             stmt2.setInt(2, ValidationUtils.integerConversion(system_id));
 
             //execute sql statement

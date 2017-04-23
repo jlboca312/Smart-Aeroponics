@@ -44,6 +44,7 @@
     DbConn dbc = new DbConn(); //get database connection
     StringArduinoData input = new StringArduinoData();
     StringArduinoData errors = new StringArduinoData();
+    
 
     if (request.getParameter("system_id") != null) {
         input.system_id = request.getParameter("system_id");
@@ -118,7 +119,7 @@
 
             Mist Interval Duration
             <input type = "text" name="mist_interval_on" value = "<%out.print(input.mist_interval_on);%>"/>
-            <br><span style="font-size: 10px;">(0-59) Ex.16:30</span>
+            <br><span style="font-size: 10px;">(0-59) Ex.10</span>
             <br/><br/>
             <span class="error"><%out.print(errors.mist_interval_on);%></span>
             <br/> 

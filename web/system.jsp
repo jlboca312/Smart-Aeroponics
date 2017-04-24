@@ -158,7 +158,7 @@
         margin-right: auto;
         display: block;
     }
-    
+
     #picContainer{
         padding-top: 20px;
         width: 500px;
@@ -172,7 +172,7 @@
         margin-right: auto;
         display: block;
     }
-    
+
 
 </style>
 
@@ -338,34 +338,43 @@
 
         </div>
     </div>
-    <!--
-    <div id="water">
-        <canvas id="waterChart" width="50" height="20" ></canvas>
-    </div>
+
     
-    <div id="waterInfo">
-        <h1>Water Level</h1>
-        <p>The water temperature is normally reflective of the air temperature in the system. 
-            The best way to control the water and air temperature is to keep your system in a 
-            well controlled area.</p> 
-    </div>
+        <div class="row">
+            <div class="col-6">
+                
+                <div id="waterInfo">
+                    <h1>Water Level</h1>
+                    <p>The water temperature is normally reflective of the air temperature in the system. 
+                        The best way to control the water and air temperature is to keep your system in a 
+                        well controlled area.</p> 
+                </div>
     
-    -->
+            </div>
+            
+            <div class="col-6">
+                <div id="water">
+                    <canvas id="waterChart" width="50" height="20" ></canvas>
+                </div>
+            </div>
+        </div>
+    
+
 
     <div class="row">
 
+        <div class="col-6">
+            <div id="light">
+                <canvas id="lightChart" width="50" height="20" ></canvas>
+            </div>
+        </div>
+        
         <div class="col-6">
             <div id="lightInfo">
                 <h1>Light </h1>
                 <p>Here you can control whether your system light is on or off. This chart simply
                     shows the status of your light.</p> 
             </div> 
-        </div>
-
-        <div class="col-6">
-            <div id="light">
-                <canvas id="lightChart" width="50" height="20" ></canvas>
-            </div>
         </div>
 
     </div>
@@ -393,14 +402,13 @@
 
         //StringSystemData sysData = SystemData.retrieve(dbc, loggedOnUser.userId);
 
-        /* MAKE THE SELECTOR */
-        //String roleSelect = MakeSelectTag.makeSelect(dbc, "roleName", roleSQL, input.roleName, "Select Role Name", "user_role_id", "role_name");
+        
         //initialize separate arrays for each sensor
         int sslh_id[] = new int[sysData.length];
         float air_temp[] = new float[sysData.length],
                 water_temp[] = new float[sysData.length],
                 humidity[] = new float[sysData.length];
-        int water_level[] = new int[sysData.length];
+        boolean water_level[] = new boolean[sysData.length];
         boolean light_on_off[] = new boolean[sysData.length];
         String date_logged[] = new String[sysData.length];
         int system_id[] = new int[sysData.length];
@@ -412,7 +420,7 @@
             air_temp[counter] = Float.parseFloat(sysData[counter].air_temp);
             water_temp[counter] = Float.parseFloat(sysData[counter].water_temp);
             humidity[counter] = Float.parseFloat(sysData[counter].humidity);
-            water_level[counter] = Integer.parseInt(sysData[counter].water_level);
+            water_level[counter] = Boolean.parseBoolean(sysData[counter].water_level);
             light_on_off[counter] = Boolean.parseBoolean(sysData[counter].light_on_off);
             date_logged[counter] = sysData[counter].date_logged;
             system_id[counter] = Integer.parseInt(sysData[counter].system_id);
@@ -430,7 +438,7 @@
     var dbAirTempData = [];
     var dbWaterTempData = [];
     var dbHumidityData = [];
-    var dbWaterLevelData = [];
+    var dbWaterLevelData = false;
     var dbLightData = false;
 
     //PUTS JAVA ARRAY INTO JAVASCRIPT ARRAY
@@ -448,6 +456,11 @@
     //for humidityData
     <%for (int jk = 0; jk < sysData.length; jk++) {%>
     dbHumidityData.push("<%=humidity[jk]%>");
+    <%}%>
+        
+    //for water level data
+    <%for (int jk = 0; jk < sysData.length; jk++) {%>
+    dbWaterLevelData = ("<%=water_level[jk]%>");
     <%}%>
 
     //for light data
@@ -673,6 +686,36 @@
      
      });
      */
+    
+    var waterLevelData = [1];
+    var wBackgroundColour = ["rgba(244, 48, 48, 0.75)"];
+    var wLabelz = ["Low"];
+
+
+    if (dbWaterLevelData) {
+        wBackgroundColour = ["rgba(50, 242, 111, 0.75)"];
+        wLabelz = ["High"];
+    }
+
+    var waterLevelData = {
+        labels: wLabelz,
+        datasets: [{
+                label: 'Water Level',
+                data: waterLevelData,
+                backgroundColor: wBackgroundColour
+            }]
+
+    };
+
+    var ctx4 = document.getElementById('waterChart').getContext('2d');
+    var waterChart = new Chart(ctx4, {
+        type: 'doughnut',
+        data: waterLevelData
+
+    });
+    
+    
+    
     var lightData = [1];
     var backgroundColour = ["rgba(244, 48, 48, 0.75)"];
     var labelz = ["Off"];
@@ -708,7 +751,8 @@
 
     //FOR CLOSING THE ELSE STATEMENT -- MEANING USER IS LOGGED IN
     <%
-        }%>
+        }
+    %>
 
 </script>
 

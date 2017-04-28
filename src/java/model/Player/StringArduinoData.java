@@ -18,11 +18,15 @@ public class StringArduinoData {
     public String light_interval = "";
     public String mist_interval_on = "";
     public String mist_interval_off = "";
+    public String maint_mode = "";
+    public String light = "";
+    public String mist = "";
+    public String take_pic = "";
     public String user_id = "";
     public String errorMsg = ""; // this field is used, for example, to hold db error while attempting login.
     
     public int getCharacterCount(){
-        String S = this.system_id + this.system_ip + this.register_date + this.light_interval_start + this.light_interval + this.mist_interval_on + this.mist_interval_off + this.user_id;
+        String S = this.system_id + this.system_ip + this.register_date + this.light_interval_start + this.light_interval + this.mist_interval_on + this.mist_interval_off + this.maint_mode + this.light + this.mist + this.take_pic + this.user_id;
         
         return S.length();
     }
@@ -35,6 +39,10 @@ public class StringArduinoData {
                 + ", light_interval:" + this.light_interval
                 + ", mist_interval_on:" + this.mist_interval_on
                 + ", mist_interval_off:" + this.mist_interval_off
+                + ", maint_mode:" + this.maint_mode
+                + ", light:" + this.light
+                + ", mist:" + this.mist
+                + ", take_pic:" + this.take_pic
                 + ", user_id:" + this.user_id
                 + ", errorMsg:" + this.errorMsg;
     }

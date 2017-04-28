@@ -166,7 +166,6 @@
         border-radius: 25px;
         text-align: center;
         font-size:16px;
-        opacity: 0.84;
         background-color: #efefef;
         margin-left: auto;
         margin-right: auto;
@@ -384,7 +383,7 @@
             <div id="picContainer">
                 <h1>Current Image of System</h1>
                 <br>
-                <img src="#" alt="System Pic" height="460" width="380">
+                <img src="pics/27/pic.jpg" alt="System Pic" height="460" width="380">
             </div>
         </div>
     </div>

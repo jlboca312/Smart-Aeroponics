@@ -51,6 +51,7 @@ public class SystemData {
             return 0;
         }
     }
+
     public static int getNumRows2(DbConn dbc, String user_id, String sql) {
         int size = 0;
 
@@ -138,9 +139,9 @@ public class SystemData {
     }
 
     public static String[] getSystems(DbConn dbc, String user_id) {
-        
+
         String temp = "SELECT system_id FROM system AS s WHERE s.user_id = ?";
-        
+
         String systems[] = new String[getNumRows2(dbc, user_id, temp)]; // default constructor sets all fields to "" (empty string)          
         int i = 0;
         PreparedStatement stmt = null;
@@ -160,7 +161,6 @@ public class SystemData {
 
             //HAS TO BE A WHILE LOOP TO SUPPORT MULTIPLE ARUINO SYSTEMS
             while (results.next()) {
-                
 
                 systems[i] = results.getObject("system_id").toString();
                 i++;
@@ -177,5 +177,73 @@ public class SystemData {
             return systems;
         }
     }
+
+    //for sending system information to the arduino, gets called by updateUserSettings.jsp which is JSON response
+    public static StringArduinoData retrieveArduino(String systemId, DbConn dbc) {
+        StringArduinoData arduino = new StringArduinoData();
+        PreparedStatement stmt = null;
+        ResultSet results = null;
+
+        try {
+
+            String sql = "SELECT maint_mode, light, mist, mist_interval_on, mist_interval_off, light_interval, light_interval_start, take_pic"
+                    + " FROM system"
+                    + " WHERE system_id = ?";
+
+            stmt = dbc.getConn().prepareStatement(sql);
+            stmt.setString(1, systemId);
+            results = stmt.executeQuery();
+        }
+            catch (Exception e) {
+            arduino.errorMsg = "Exception thrown in SystemData.retrieveArduino(): " + e.getMessage();
+            return arduino;
+        }
+            
+        try {    
+            if (results.next()) {
+                
+                if (results.getObject("maint_mode") != null) {
+                    arduino.maint_mode = results.getObject("maint_mode").toString();
+                }
+                if (results.getObject("light") != null) {
+                    arduino.light = results.getObject("light").toString();
+                }
+                if (results.getObject("mist") != null) {
+                    arduino.mist = results.getObject("mist").toString();
+                }
+                if (results.getObject("mist_interval_on") != null) {
+                    arduino.mist_interval_on = results.getObject("mist_interval_on").toString();
+                }
+                if (results.getObject("mist_interval_off") != null) {
+                    arduino.mist_interval_off = results.getObject("mist_interval_off").toString();
+                }
+                if (results.getObject("light_interval") != null) {
+                    arduino.light_interval = results.getObject("light_interval").toString();
+                }
+                if (results.getObject("light_interval_start") != null) {
+                    arduino.light_interval_start = results.getObject("light_interval_start").toString();
+                }
+                if (results.getObject("take_pic") != null) {
+                    arduino.take_pic = results.getObject("take_pic").toString();
+                }
+                
+                /*arduino.system_id = results.getObject("system_id").toString();
+                arduino.system_ip = results.getObject("system_ip").toString();
+                arduino.register_date = results.getObject("register_date").toString();
+                arduino.user_id = results.getObject("user_id").toString();*/
+
+            }
+            
+            //close stuff
+            results.close();
+            stmt.close();
+
+            return arduino;
+        } catch (Exception e) {
+            arduino.errorMsg = "Exception thrown in SystemData.retrieveArduino(): " + e.getMessage();
+            return arduino;
+        }
+    }
+    
 
 }

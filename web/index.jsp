@@ -19,7 +19,7 @@
         background-repeat: no-repeat;
         background-size: cover;
         background-attachment: fixed;
-        margin-top: 50px;
+        margin-top: 35px;
         margin-right: 60px;
 
     }

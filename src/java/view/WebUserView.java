@@ -26,13 +26,9 @@ public class WebUserView {
         PreparedStatement stmt = null;
         ResultSet results = null;
         try {
-            //sb.append("ready to create the statement & execute query " + "<br/>");
+
             
-            //sql string to display all fields of User table
-            /*String sql = "select player_id, player_name, email_address, pswd, skill_level, role_name from Player as P, User_role as U "
-                    + "where P.user_role_id = U.user_role_id order by player_id, player_name";*/
-            
-            //sql string to display just id, name, email and pswd
+            //sql string to display just date, log info and system id
             String sql = "SELECT date, log_info, system_id FROM system_command_log AS scl WHERE scl.system_id = ?";
             
             stmt = dbc.getConn().prepareStatement(sql);
@@ -40,7 +36,6 @@ public class WebUserView {
             stmt.setString(1, systemId);
             
             results = stmt.executeQuery();
-            //sb.append("executed the query " + "<br/><br/>");
 
             sb.append("<table class='");
             sb.append(cssTableClass);
@@ -49,15 +44,12 @@ public class WebUserView {
             sb.append("<th style='text-align:right'>Date Logged</th>");
             sb.append("<th style='text-align:center'>Log Info</th>");
             sb.append("<th style='text-align:center'>System ID</th>");
-            //sb.append("<th style='text-align:right'>Skill Level</th></th>");
-            //sb.append("<th style='text-align:center'>Role Name</th></tr>");
+
             while (results.next()) {
                 sb.append("<tr>");
                 sb.append(FormatUtils.formatDateTd(results.getObject("date")));
                 sb.append(FormatUtils.formatStringTd(results.getObject("log_info")));
                 sb.append(FormatUtils.formatIntegerTd(results.getObject("system_id")));
-               // sb.append(FormatUtils.formatDecimalTd(results.getObject("skill_level")));
-                //sb.append(FormatUtils.formatStringTd(results.getObject("role_name")));
                 sb.append("</tr>\n");
             }
             sb.append("</table>");
@@ -70,7 +62,7 @@ public class WebUserView {
         }
     }
 
-    public static String playerListUpdate(String deleteIcon, String deleteFn, String updateIcon, String updateURL,
+    /*public static String playerListUpdate(String deleteIcon, String deleteFn, String updateIcon, String updateURL,
             String cssClassForTable, DbConn dbc) {
         return playersByNameView(deleteIcon, deleteFn, updateIcon, updateURL, cssClassForTable, dbc);
     }
@@ -101,8 +93,6 @@ public class WebUserView {
 
         try {
             //sql string for all fields in User table
-            /*String sql = "select player_id, player_name, email_address, pswd, skill_level, role_name from Player as P, User_role as U "
-                    + "where P.user_role_id = U.user_role_id order by player_id, player_name";*/
             
             //sql string for just displaying id, name, email and pswd
             String sql = "select player_id, player_name, email_address, pswd from Player as P, User_role as U "
@@ -162,5 +152,5 @@ public class WebUserView {
                     + "<br/> partial output: <br/>" + sb.toString();
         }
 
-    }
+    }*/
 }

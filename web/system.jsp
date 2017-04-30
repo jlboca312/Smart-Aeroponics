@@ -383,7 +383,7 @@
             <div id="picContainer">
                 <h1>Current Image of System</h1>
                 <br>
-                <img src="pics/27/pic.jpg" alt="System Pic" height="460" width="380">
+                <img src="pics/<%out.print(loggedOnUser.system_ip);%>/pic.jpg" alt="System Pic" height="460" width="380">
             </div>
         </div>
     </div>

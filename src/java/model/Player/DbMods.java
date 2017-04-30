@@ -153,7 +153,7 @@ public class DbMods {
 
             /* PREPARE INITIAL SQL STATEMENT */
             String sql = "UPDATE system"
-                    + " SET light_interval_start = ?, light_interval = ?, mist_interval_on = ?, mist_interval_off = ?"
+                    + " SET light_interval_start = ?, light_interval = ?, mist_interval_on = ?, mist_interval_off = ?, light = ?"
                     + " WHERE system_id = ?";
 
             /* USING SALLY'S WRAPPER PREPAREDSTATEMENT CLASS*/
@@ -164,7 +164,8 @@ public class DbMods {
             stmt.setString(2, input.light_interval);
             stmt.setString(3, input.mist_interval_on);
             stmt.setString(4, input.mist_interval_off);
-            stmt.setInt(5, ValidationUtils.integerConversion(system_id));
+            stmt.setString(5, input.light);
+            stmt.setInt(6, ValidationUtils.integerConversion(system_id));
 
             //execute sql statement
             int numRows = stmt.executeUpdate();
@@ -177,7 +178,7 @@ public class DbMods {
             PrepStatement stmt2 = new PrepStatement(dbc, sql2);
 
             /* FILL IN THOSE QUESTION MARKS */
-            stmt2.setString(1, "Set artificial sunrise to " + input.light_interval_start + ", light interval to " + input.light_interval + " hours, mist interval to " +input.mist_interval_off+ " minutes, mist duration to " +input.mist_interval_on + " seconds.");
+            stmt2.setString(1, "Set artificial sunrise to " + input.light_interval_start + ", light interval to " + input.light_interval + " hours, mist interval to " +input.mist_interval_off+ " minutes, mist duration to " +input.mist_interval_on + " seconds, light to " + input.light);
             stmt2.setInt(2, ValidationUtils.integerConversion(system_id));
 
             //execute sql statement

@@ -172,6 +172,15 @@
         display: block;
     }
 
+    .error{
+        color: red;
+    }
+
+    .msg{
+        font-weight: bold;
+        font-size: 16px;
+    }
+
 
 </style>
 
@@ -187,6 +196,10 @@
     //StringData loggedOnUser = new StringData();
     //loggedOnUser.userId = "17";
     //String systemId = "6";
+
+    String isTakePicture = ""; //string variable for when user clicks take picture button
+    String pictureMessage = "";
+    boolean pictureFlag = false;
 
     if (loggedOnUser == null) { //meaning user is not logged in
         try {
@@ -204,6 +217,23 @@
         if (request.getParameter("system_id") != null) {
             loggedOnUser.system_ip = request.getParameter("system_id");
             //session.setAttribute("user", loggedOnUser);
+        }
+
+        //for when user clicks take picture button
+        if (request.getParameter("take_pic") != null) {
+            isTakePicture = request.getParameter("take_pic");
+
+            //run take picture 
+            pictureMessage = SystemData.takePicture(isTakePicture, loggedOnUser.system_ip, dbc);
+        }       
+
+        //error check if the picture was successful
+        if (pictureMessage.length() == 1) { //means take_pic field was SUCCESSFULLY changed
+            msg = "";
+            //set flag
+            pictureFlag = true;
+        } else if(pictureMessage.length() > 1){ //else take_pic field not updated
+            msg = "Picture Capture Failure: " + pictureMessage;
         }
 
         //get sytems
@@ -226,21 +256,7 @@
 
         outt += "</select>\n\n";
 
-        /*(String picOut = "\n\n<select name = 'pics'>\n";
 
-        //puts a pre-selected choice on first rendering of dropdown            
-        picOut += "   <option value = '0'>";
-        picOut += "Select Your Pic" + "</option>\n";
-
-        //while there are more rows/records (ex. jedrick, david, john, etc.)
-        for (int o = 0; o < systems.length; o++) {
-
-            picOut += "   <option value = '" + systems[o] + "'>";
-            picOut += systems[o] + "</option>\n";
-
-        }
-
-        picOut += "</select>\n\n";*/
 %>
 
 
@@ -338,26 +354,26 @@
         </div>
     </div>
 
-    
-        <div class="row">
-            <div class="col-6">
-                
-                <div id="waterInfo">
-                    <h1>Water Level</h1>
-                    <p>The water temperature is normally reflective of the air temperature in the system. 
-                        The best way to control the water and air temperature is to keep your system in a 
-                        well controlled area.</p> 
-                </div>
-    
+
+    <div class="row">
+        <div class="col-6">
+
+            <div id="waterInfo">
+                <h1>Water Level</h1>
+                <p>The water temperature is normally reflective of the air temperature in the system. 
+                    The best way to control the water and air temperature is to keep your system in a 
+                    well controlled area.</p> 
             </div>
-            
-            <div class="col-6">
-                <div id="water">
-                    <canvas id="waterChart" width="50" height="20" ></canvas>
-                </div>
+
+        </div>
+
+        <div class="col-6">
+            <div id="water">
+                <canvas id="waterChart" width="50" height="20" ></canvas>
             </div>
         </div>
-    
+    </div>
+
 
 
     <div class="row">
@@ -367,7 +383,7 @@
                 <canvas id="lightChart" width="50" height="20" ></canvas>
             </div>
         </div>
-        
+
         <div class="col-6">
             <div id="lightInfo">
                 <h1>Light </h1>
@@ -382,7 +398,12 @@
         <div class="col-12">
             <div id="picContainer">
                 <h1>Current Image of System</h1>
-                <br>
+                <form action="system.jsp" method="get">
+                    <button name="take_pic" value="1">Take Picture</button>
+                    <br><br>
+                    <span class="error"><%out.print(msg);%></span>
+                </form>
+
                 <img src="pics/<%out.print(loggedOnUser.system_ip);%>/pic.jpg" alt="System Pic" height="460" width="380">
             </div>
         </div>
@@ -400,8 +421,6 @@
         StringSystemData sysData[] = SystemData.retrieve(dbc, loggedOnUser.userId, loggedOnUser.system_ip);
 
         //StringSystemData sysData = SystemData.retrieve(dbc, loggedOnUser.userId);
-
-        
         //initialize separate arrays for each sensor
         int sslh_id[] = new int[sysData.length];
         float air_temp[] = new float[sysData.length],
@@ -431,7 +450,10 @@
 
 
 
-
+    //for picture taking alert
+    if (<%=pictureFlag%>) {
+        alert("Picture Captured Successfully");
+    }
 
     //initializing all DB data arrays
     var dbAirTempData = [];
@@ -456,7 +478,7 @@
     <%for (int jk = 0; jk < sysData.length; jk++) {%>
     dbHumidityData.push("<%=humidity[jk]%>");
     <%}%>
-        
+
     //for water level data
     <%for (int jk = 0; jk < sysData.length; jk++) {%>
     dbWaterLevelData = ("<%=water_level[jk]%>");
@@ -685,7 +707,7 @@
      
      });
      */
-    
+
     var waterLevelData = [1];
     var wBackgroundColour = ["rgba(244, 48, 48, 0.75)"];
     var wLabelz = ["Low"];
@@ -712,9 +734,9 @@
         data: waterLevelData
 
     });
-    
-    
-    
+
+
+
     var lightData = [1];
     var backgroundColour = ["rgba(244, 48, 48, 0.75)"];
     var labelz = ["Off"];

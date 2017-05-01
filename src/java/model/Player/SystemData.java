@@ -193,15 +193,14 @@ public class SystemData {
             stmt = dbc.getConn().prepareStatement(sql);
             stmt.setString(1, systemId);
             results = stmt.executeQuery();
-        }
-            catch (Exception e) {
+        } catch (Exception e) {
             arduino.errorMsg = "Exception thrown in SystemData.retrieveArduino(): " + e.getMessage();
             return arduino;
         }
-            
-        try {    
+
+        try {
             if (results.next()) {
-                
+
                 if (results.getObject("maint_mode") != null) {
                     arduino.maint_mode = results.getObject("maint_mode").toString();
                 }
@@ -226,14 +225,13 @@ public class SystemData {
                 if (results.getObject("take_pic") != null) {
                     arduino.take_pic = results.getObject("take_pic").toString();
                 }
-                
+
                 /*arduino.system_id = results.getObject("system_id").toString();
                 arduino.system_ip = results.getObject("system_ip").toString();
                 arduino.register_date = results.getObject("register_date").toString();
                 arduino.user_id = results.getObject("user_id").toString();*/
-
             }
-            
+
             //close stuff
             results.close();
             stmt.close();
@@ -244,6 +242,40 @@ public class SystemData {
             return arduino;
         }
     }
-    
+
+    //when user hits take picture button, the take_pic field in the DB will be set to 1 for ten seconds
+    //will return the string "1" if successful
+    public static String takePicture(String pictureValue, String systemId, DbConn dbc) {
+        PreparedStatement stmt = null;
+        String msg = "";
+
+        try {
+            System.out.println("pictureValue is " + pictureValue);
+            System.out.println("systemId is " +systemId);
+            
+            String sql = "UPDATE system SET take_pic = ? WHERE system_id = ?";
+
+            stmt = dbc.getConn().prepareStatement(sql);
+            stmt.setString(1, pictureValue);
+            stmt.setString(2, systemId);
+
+            //execute sql statement
+            int numRows = stmt.executeUpdate();
+
+            if (numRows == 1) {
+                msg = "1"; // This means SUCCESS. Let the JSP page decide how to tell this to the user.
+            } else {
+                // probably never get here unless you forgot your WHERE clause and did a bulk sql update.
+                msg = numRows + " records were inserted when exactly 1 was expected.";
+            }
+            
+            return msg;
+
+        } catch (Exception e) {
+            msg = "Exception thrown in SystemData.takePicture(): " + e.getMessage();
+            return msg;
+        }
+
+    }
 
 }

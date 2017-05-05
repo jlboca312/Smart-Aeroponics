@@ -199,6 +199,7 @@
 
     String isTakePicture = ""; //string variable for when user clicks take picture button
     String pictureMessage = "";
+    String revertPicMessage = "";
     boolean pictureFlag = false;
 
     if (loggedOnUser == null) { //meaning user is not logged in
@@ -223,16 +224,16 @@
         if (request.getParameter("take_pic") != null) {
             isTakePicture = request.getParameter("take_pic");
 
-            //run take picture 
+            //run take picture, i.e change take_pic field to 1
             pictureMessage = SystemData.takePicture(isTakePicture, loggedOnUser.system_ip, dbc);
-        }       
+        }
 
         //error check if the picture was successful
         if (pictureMessage.length() == 1) { //means take_pic field was SUCCESSFULLY changed
             msg = "";
             //set flag
             pictureFlag = true;
-        } else if(pictureMessage.length() > 1){ //else take_pic field not updated
+        } else if (pictureMessage.length() > 1) { //else take_pic field not updated
             msg = "Picture Capture Failure: " + pictureMessage;
         }
 
@@ -387,7 +388,7 @@
         <div class="col-6">
             <div id="lightInfo">
                 <h1>Light </h1>
-                <p>Here you can control whether your system light is on or off. This chart simply
+                <p>You can control the light <a href="arduino.jsp">here.</a> This chart simply
                     shows the status of your light.</p> 
             </div> 
         </div>
@@ -453,6 +454,14 @@
     //for picture taking alert
     if (<%=pictureFlag%>) {
         alert("Picture Captured Successfully");
+    <%
+        //sleep for ten seconds
+        Thread.sleep(10000);
+
+        //revert the take_pic field back to 0
+        revertPicMessage = SystemData.revertPictureInDB(loggedOnUser.system_ip, dbc);
+    %>
+
     }
 
     //initializing all DB data arrays
@@ -492,7 +501,7 @@
 
     //alert("air_temp: " + dbAirTempData);
 
-    var sensorHighDataCollected = [1, 0, -1, -1], sensorMedDataCollected = [1, 1, -1, -1], sensorLowDataCollected = [1, 1, -1, -1];
+    //var sensorHighDataCollected = [1, 0, -1, -1], sensorMedDataCollected = [1, 1, -1, -1], sensorLowDataCollected = [1, 1, -1, -1];
 
     //HARDCODED VALUES FOR TESTING CHART 
     //var dbAirTempData = [69.0];
@@ -539,7 +548,12 @@
                         scaleLabel: {
                             display: true,
                             labelString: 'Hours'
-                        }
+                        }/*,
+                        ticks: {
+                            autoSkip: true,
+                            maxTicksLimit: 3
+                        }*/
+
                     }]
 
             }

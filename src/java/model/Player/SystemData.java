@@ -96,7 +96,6 @@ public class SystemData {
         ResultSet results = null;
 
         try {
-            //String sql = "select customer_id, credit_limit from customer where email_address = ? and pwd = ?";
             String sql = "SELECT system_status_log_hourly_id, air_temp, water_temp, humidity, water_level, light_on_off, date_logged, s.system_id FROM system_status_log_hourly AS sslh, system AS s WHERE sslh.system_id = s.system_id AND s.user_id = ? and s.system_id = ?";
 
             stmt = dbc.getConn().prepareStatement(sql);
@@ -129,7 +128,8 @@ public class SystemData {
             //close stuff
             results.close();
             stmt.close();
-
+            System.out.println("fuuuck: " +sysData.length);
+            
             return sysData;
         } catch (Exception e) {
             sysData[0].errorMsg = "Exception thrown in SystemData.retrieve(): " + e.getMessage();
@@ -250,9 +250,7 @@ public class SystemData {
         String msg = "";
 
         try {
-            System.out.println("pictureValue is " + pictureValue);
-            System.out.println("systemId is " +systemId);
-            
+
             String sql = "UPDATE system SET take_pic = ? WHERE system_id = ?";
 
             stmt = dbc.getConn().prepareStatement(sql);
@@ -262,13 +260,14 @@ public class SystemData {
             //execute sql statement
             int numRows = stmt.executeUpdate();
 
+            //ERROR CHECKING
             if (numRows == 1) {
                 msg = "1"; // This means SUCCESS. Let the JSP page decide how to tell this to the user.
             } else {
                 // probably never get here unless you forgot your WHERE clause and did a bulk sql update.
-                msg = numRows + " records were inserted when exactly 1 was expected.";
+                msg = numRows + " records were modified when exactly 1 was expected.";
             }
-            
+
             return msg;
 
         } catch (Exception e) {
@@ -276,6 +275,34 @@ public class SystemData {
             return msg;
         }
 
+    }
+
+    public static String revertPictureInDB(String systemId, DbConn dbc) {
+        PreparedStatement stmt2 = null;
+        String msg = "";
+
+        try {           
+
+            //revert take_pic back to 0 after ten seconds
+            String sql2 = "UPDATE system SET take_pic = 0 WHERE system_id = ?";
+
+            stmt2 = dbc.getConn().prepareStatement(sql2);
+            stmt2.setString(1, systemId);
+
+            //execute sql statement
+            int numRows2 = stmt2.executeUpdate();
+
+            if (numRows2 == 1) {
+                msg = "1"; //meaning success
+            } else {
+                msg = "In reverting take_pic back to 0, " + numRows2 + " records were modified when exactly 1 was expected.";
+            }
+
+            return msg;
+        } catch (Exception e) {
+            msg = "Exception thrown in SystemData.takePicture(): " + e.getMessage();
+            return msg;
+        }
     }
 
 }

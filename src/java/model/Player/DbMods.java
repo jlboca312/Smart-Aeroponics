@@ -45,7 +45,7 @@ public class DbMods {
 
             /* CREATES ENTRY IN SYSTEM TABLE*/
  /* PREPARE INITIAL SQL STATEMENT */
-            String sql2 = "INSERT INTO system (system_ip, register_date, light_interval_start, light_interval, mist_interval_on, mist_interval_off, user_id) VALUES(?, sysdate(), CURRENT_TIMESTAMP, 8.0, CURRENT_TIMESTAMP, 8.0,  (SELECT MAX(user_id) from user))";
+            String sql2 = "INSERT INTO system (system_ip, register_date, light_interval_start, light_interval,  user_id, maint_mode, mist_interval_on, mist_interval_off, light, mist, take_pic) VALUES(?, sysdate(), CURRENT_TIMESTAMP, 8.0,(SELECT MAX(user_id) from user), 0, 0, 8.0, 0, 0, 0)";
 
             PrepStatement stmt2 = new PrepStatement(dbc, sql2);
 
@@ -79,7 +79,7 @@ public class DbMods {
                     errorMsgs.errorMsg = ""; // This means SUCCESS. Let the JSP page decide how to tell this to the user.
                 } else {
                     // probably never get here unless you forgot your WHERE clause and did a bulk sql update.
-                    errorMsgs.errorMsg = numRows2 + " records were inserted when exactly 1 was expected.fuck";
+                    errorMsgs.errorMsg = numRows2 + " records were inserted when exactly 1 was expected. (numRows2)";
                 }
             }
 
@@ -131,7 +131,7 @@ public class DbMods {
                     errorMsgs.errorMsg = ""; // This means SUCCESS. Let the JSP page decide how to tell this to the user.
                 } else {
                     // probably never get here unless you forgot your WHERE clause and did a bulk sql update.
-                    errorMsgs.errorMsg = numRows2 + " records were inserted when exactly 1 was expected.fuck";
+                    errorMsgs.errorMsg = numRows2 + " records were inserted when exactly 1 was expected.";
                 }
             }
 
@@ -153,7 +153,7 @@ public class DbMods {
 
             /* PREPARE INITIAL SQL STATEMENT */
             String sql = "UPDATE system"
-                    + " SET light_interval_start = ?, light_interval = ?, mist_interval_on = ?, mist_interval_off = ?, light = ?"
+                    + " SET light_interval_start = ?, light_interval = ?, mist_interval_on = ?, mist_interval_off = ?, light = ? , mist = ?"
                     + " WHERE system_id = ?";
 
             /* USING SALLY'S WRAPPER PREPAREDSTATEMENT CLASS*/
@@ -165,7 +165,8 @@ public class DbMods {
             stmt.setString(3, input.mist_interval_on);
             stmt.setString(4, input.mist_interval_off);
             stmt.setString(5, input.light);
-            stmt.setInt(6, ValidationUtils.integerConversion(system_id));
+            stmt.setString(6, input.mist);
+            stmt.setInt(7, ValidationUtils.integerConversion(system_id));
 
             //execute sql statement
             int numRows = stmt.executeUpdate();
@@ -178,7 +179,7 @@ public class DbMods {
             PrepStatement stmt2 = new PrepStatement(dbc, sql2);
 
             /* FILL IN THOSE QUESTION MARKS */
-            stmt2.setString(1, "Set artificial sunrise to " + input.light_interval_start + ", light interval to " + input.light_interval + " hours, mist interval to " +input.mist_interval_off+ " minutes, mist duration to " +input.mist_interval_on + " seconds, light to " + input.light);
+            stmt2.setString(1, "Set artificial sunrise to " + input.light_interval_start + ", light interval to " + input.light_interval + " hours, mist interval to " +input.mist_interval_off+ " minutes, mist duration to " +input.mist_interval_on + " seconds, light to " + input.light + " mist to " + input.mist);
             stmt2.setInt(2, ValidationUtils.integerConversion(system_id));
 
             //execute sql statement
@@ -201,7 +202,7 @@ public class DbMods {
                     errorMsgs.errorMsg = ""; // This means SUCCESS. Let the JSP page decide how to tell this to the user.
                 } else {
                     // probably never get here unless you forgot your WHERE clause and did a bulk sql update.
-                    errorMsgs.errorMsg = numRows2 + " records were inserted when exactly 1 was expected.";
+                    errorMsgs.errorMsg = numRows2 + " records were inserted when exactly 1 was expected. (numRows2)";
                 }
 
             }

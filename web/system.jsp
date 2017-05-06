@@ -519,7 +519,7 @@
     var hourLabels = [];
 
     for (var j = 0; j < hoursCollected; j++) {
-        hourLabels[j] = (j + 1) + ":00";
+        hourLabels[j] = (j + 1);
     }
 
 
@@ -547,12 +547,12 @@
                 xAxes: [{
                         scaleLabel: {
                             display: true,
-                            labelString: 'Hours'
-                        }/*,
+                            labelString: 'Plot #'
+                        },
                         ticks: {
                             autoSkip: true,
-                            maxTicksLimit: 3
-                        }*/
+                            maxTicksLimit: 30
+                        }
 
                     }]
 
@@ -589,7 +589,11 @@
                 xAxes: [{
                         scaleLabel: {
                             display: true,
-                            labelString: 'Hours'
+                            labelString: 'Plot #'
+                        },
+                        ticks: {
+                            autoSkip: true,
+                            maxTicksLimit: 30
                         }
                     }]
 
@@ -625,7 +629,11 @@
                 xAxes: [{
                         scaleLabel: {
                             display: true,
-                            labelString: 'Hours'
+                            labelString: 'Plot #'
+                        },
+                        ticks: {
+                            autoSkip: true,
+                            maxTicksLimit: 30
                         }
                     }]
 

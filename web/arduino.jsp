@@ -59,6 +59,7 @@
         input.mist_interval_off = request.getParameter("mist_interval_off");
         input.mist_interval_on = request.getParameter("mist_interval_on");
         input.light = request.getParameter("light");
+        input.mist = request.getParameter("mist");
 
         errors.errorMsg = dbc.getErr();
 
@@ -130,6 +131,16 @@
                 <input type="radio" name="light" value="1"> ON
                 &nbsp;&nbsp;
                 <input type="radio" name="light" value="0" checked> OFF
+            </div>
+            <input type = "hidden" name="system_id" value = "<%out.print(input.system_id);%>"/>
+            
+            <br/>
+            
+            Mist Status
+            <div>
+                <input type="radio" name="mist" value="1"> ON
+                &nbsp;&nbsp;
+                <input type="radio" name="mist" value="0" checked> OFF
             </div>
             <input type = "hidden" name="system_id" value = "<%out.print(input.system_id);%>"/>
 
